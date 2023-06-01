@@ -27,6 +27,7 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
+        myTank.move();
     }
 
     class FrameKeyListener extends KeyAdapter {
@@ -54,7 +55,9 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+            myTank.setMoving(true);
             setMainTankDirection();
+
         }
 
         @Override
@@ -79,6 +82,11 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDirection() {
+            if(!(bL || bU || bR || bD)) {
+                myTank.setMoving(false);
+                return;
+            }
+            myTank.setMoving(true);
             if(bL) myTank.setDirection(Direction.LEFT);
             if(bU) myTank.setDirection(Direction.UP);
             if(bR) myTank.setDirection(Direction.RIGHT);
