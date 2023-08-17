@@ -1,13 +1,18 @@
-package org.jy.tank;
+package org.jy.tank.model;
+
+import org.jy.tank.enums.Direction;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Tank {
     private int x, y;
     private Direction direction;
-    private static final int speed = 10;
+    private static final int SPEED = 10;
 
     private boolean moving = false;
+
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Tank(int x, int y, Direction direction) {
         this.x = x;
@@ -19,28 +24,39 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.white);
         g.fillRect(x, y, 50, 50);
+        g.setColor(c);
+        move();
+        for (Bullet bullet: bullets) {
+            bullet.paint(g);
+        }
     }
 
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
-    public void move() {
+    private void move() {
         if(!moving) { return; }
         switch (direction){
             case LEFT:
-                x -= speed;
+                x -= SPEED;
                 break;
             case RIGHT:
-                x += speed;
+                x += SPEED;
                 break;
             case UP:
-                y -= speed;
+                y -= SPEED;
                 break;
             case DOWN:
-                y += speed;
+                y += SPEED;
                 break;
         }
+    }
+
+    public void shoot() {
+        bullets.add(new Bullet(x, y, direction));
     }
 }

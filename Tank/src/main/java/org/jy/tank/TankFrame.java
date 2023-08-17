@@ -1,5 +1,8 @@
 package org.jy.tank;
 
+import org.jy.tank.enums.Direction;
+import org.jy.tank.model.Tank;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -7,11 +10,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
-
+    private static final int GAME_W = 800, GAME_H = 600;
     Tank myTank = new Tank(10, 10, Direction.DOWN);
 
     public TankFrame() {
-        this.setSize(800, 600);
+        this.setSize(GAME_W, GAME_H);
         this.setTitle("Tank War");
         this.setResizable(false);
         this.setVisible(true);
@@ -24,10 +27,24 @@ public class TankFrame extends Frame {
         });
     }
 
+    Image offScreenImage = null;
+    @Override
+    public void update(Graphics g) {
+        if(offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_W, GAME_H);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_W, GAME_H);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0,0, null);
+    }
+
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
-        myTank.move();
     }
 
     class FrameKeyListener extends KeyAdapter {
@@ -52,6 +69,8 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_D:
                     bR = true;
                     break;
+                case KeyEvent.VK_SPACE:
+                    myTank.shoot();
                 default:
                     break;
             }
