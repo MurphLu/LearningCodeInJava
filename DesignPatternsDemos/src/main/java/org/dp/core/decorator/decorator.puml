@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class GameObject{
+    int x,y
+
+    + void print(Graphic g)
+}
+
+class bullet {
+    + void print(Graphic g)
+}
+
+class GODecorator{
+    GameObject go
+    + void print(Graphic g)
+}
+
+class RectDecorator{
+    GameObject go
+    + void print(Graphic g)
+}
+
+class TailDecorator{
+    GameObject go
+    + void print(Graphic g)
+}
+
+GameObject <|-- bullet
+GameObject <|-- GODecorator
+GameObject --o GODecorator
+
+GODecorator <|-- RectDecorator
+GODecorator <|-- TailDecorator
+
+@enduml

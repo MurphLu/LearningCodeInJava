@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class AbstractFactory
+
+abstract class Weapon
+abstract class food
+abstract class Vehicle
+
+class ModernFactory
+
+class Candy
+
+class Car
+
+class Gun
+
+
+Weapon <-- AbstractFactory
+food <-- AbstractFactory
+Vehicle <-- AbstractFactory
+
+AbstractFactory <|-- ModernFactory
+
+food <|-- Candy
+Weapon <|-- Gun
+Vehicle <|-- Car
+
+
+ModernFactory --> Candy
+ModernFactory --> Gun
+ModernFactory --> Car
+
+@enduml
