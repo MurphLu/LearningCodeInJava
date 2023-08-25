@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class Node {
+    abstract void print()
+}
+
+class Leaf {
+    + print()
+}
+
+class Branch{
+    List<Node> list
+
+    + print()
+    + add(Node n)
+}
+
+
+Node <|-- Leaf
+Node <|-- Branch
+
+Node "0..n" --o "1" Branch
+
+
+@enduml
