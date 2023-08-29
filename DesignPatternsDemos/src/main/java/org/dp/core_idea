@@ -1,0 +1,14 @@
+指导思想：
+    可维护性 Maintainability
+    可复用性 Reusability
+    可扩展性 Extensibility / Scalability
+    灵活性 Flexibility / mobility / adaptability
+
+单一职责原则
+开闭原则：对扩展开放，对修改关闭
+里氏替换原则（所有使用父类的地方，必须能够透明的使用子类，子类可以完全替代父类） Liscov Substitution Principle
+依赖倒置原则（依赖抽象，而不是依赖具体，面向接口）
+接口隔离原则（每一个接口承担独立的角色，不干份外的事）
+迪米特法则（尽量不要和陌生人说话，非陌生人包括（对象本身，以参数形式传入到当前对象方法中的对象，当前对象的成员对象，集合类型对象中的元素，当前对象创建的对象））
+
+
