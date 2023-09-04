@@ -1,11 +1,10 @@
 package org.algorithm;
 
-import org.algorithm.sort.InsertSort;
-import org.algorithm.sort.MergeSort;
-import org.algorithm.sort.QuickSort;
+import org.algorithm.ds.Heap;
+import org.algorithm.sort.*;
 import org.algorithm.utils.ArrayUtils;
 import org.junit.Test;
-import org.algorithm.sort.Sorter;
+
 import java.util.Arrays;
 
 public class SortTest {
@@ -17,6 +16,7 @@ public class SortTest {
     @Test
     public void testQuick() throws Exception {
         testSort(new QuickSort());
+        testSort(new Quick());
     }
 
     @Test
@@ -27,6 +27,24 @@ public class SortTest {
     @Test
     public void testMerge() throws Exception {
         testSort(new MergeSort());
+    }
+
+    @Test
+    public void testHeapSort() throws Exception {
+        testSort(new HeapSort());
+    }
+
+    @Test
+    public void testHeap() throws Exception {
+        Heap h = new Heap();
+        h.push(1);
+        h.push(2);
+        h.push(3);
+        h.push(4);
+        while (h.getSize() > 0) {
+            System.out.println(h.pop());
+        }
+        h.print();
     }
 
     private void testSort(Sorter sorter) throws Exception {

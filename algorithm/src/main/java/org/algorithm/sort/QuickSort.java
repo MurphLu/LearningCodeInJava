@@ -2,6 +2,8 @@ package org.algorithm.sort;
 
 import org.algorithm.utils.ArrayUtils;
 
+import java.util.Arrays;
+
 public class QuickSort implements Sorter{
     @Override
     public void sort(int[] arr) {
@@ -38,3 +40,4 @@ public class QuickSort implements Sorter{
     }
 
 }
+
