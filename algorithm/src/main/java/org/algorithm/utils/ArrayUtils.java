@@ -31,11 +31,28 @@ public class ArrayUtils {
         return arr;
     }
 
+    public static int[][] generate(int caseNum, int minValue, int maxValue, int maxSize) {
+        int[][] arr = new int[caseNum][];
+        for (int i = 0; i < caseNum; i++) {
+            arr[i] = arrGenerator(minValue, maxValue, maxSize);
+        }
+        return arr;
+    }
+
     private static int[] arrGenerator(int maxValue, int maxSize) {
         int size = (int)((maxSize + 1) * Math.random());
         int[] arr = new int[size];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int)((maxValue + 1) * Math.random()) - (int)((maxValue + 1) * Math.random());
+        }
+        return arr;
+    }
+
+    private static int[] arrGenerator(int minValue, int maxValue, int maxSize) {
+        int size = (int)((maxSize + 1) * Math.random());
+        int[] arr = new int[size];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = minValue + (int)((maxValue - minValue + 1)*Math.random());
         }
         return arr;
     }

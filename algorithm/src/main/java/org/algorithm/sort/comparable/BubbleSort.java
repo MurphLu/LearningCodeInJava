@@ -1,4 +1,4 @@
-package org.algorithm.sort;
+package org.algorithm.sort.comparable;
 // 时间复杂度：O(n²)，空间复杂度O(1)
 public class BubbleSort implements Sorter {
     @Override

@@ -1,8 +1,6 @@
-package org.algorithm.sort;
+package org.algorithm.sort.comparable;
 
 import org.algorithm.utils.ArrayUtils;
-
-import java.util.Arrays;
 
 public class QuickSort implements Sorter{
     @Override

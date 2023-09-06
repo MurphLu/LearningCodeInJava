@@ -1,4 +1,4 @@
-package org.algorithm.sort;
+package org.algorithm.sort.comparable;
 
 import org.algorithm.utils.ArrayUtils;
 
@@ -19,6 +19,16 @@ public class Quick implements Sorter {
 
     private void process(int[] arr, int start, int end) {
         if (start > end) {
+            return;
+        }
+        // 快排调度，插入排小样本
+        if (end - start < 60) {
+            if(!ArrayUtils.canSort(arr)){ return; }
+            for (int i = start; i <= end; i++) {
+                for (int j = i; j > 0 && arr[j] < arr[j-1]; j--) {
+                    ArrayUtils.swap(arr, j, j-1);
+                }
+            }
             return;
         }
         int[] partition = partition(arr, start, end);

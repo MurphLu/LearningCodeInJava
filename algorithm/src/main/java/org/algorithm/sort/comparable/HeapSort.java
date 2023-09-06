@@ -1,4 +1,4 @@
-package org.algorithm.sort;
+package org.algorithm.sort.comparable;
 
 import org.algorithm.utils.ArrayUtils;
 

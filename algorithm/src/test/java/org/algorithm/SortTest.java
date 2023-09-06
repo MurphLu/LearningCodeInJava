@@ -1,7 +1,7 @@
 package org.algorithm;
 
 import org.algorithm.ds.Heap;
-import org.algorithm.sort.*;
+import org.algorithm.sort.comparable.*;
 import org.algorithm.utils.ArrayUtils;
 import org.junit.Test;
 
