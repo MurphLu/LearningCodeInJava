@@ -1,4 +1,6 @@
-package org.algorithm.tree;
+package org.algorithm.tree.questions;
+
+import org.algorithm.tree.Node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
