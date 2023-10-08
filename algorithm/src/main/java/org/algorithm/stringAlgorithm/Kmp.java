@@ -1,9 +1,4 @@
-package org.algorithm.kmp;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+package org.algorithm.stringAlgorithm;
 
 /**
  * KMP算法解决的问题

@@ -1,0 +1,15 @@
+digraph{
+n0 [shape=circle ]
+n1 [shape=circle ]
+n0->n1
+n3 [shape=circle ]
+n1->n3
+n4 [shape=circle ]
+n1->n4
+n2 [shape=circle ]
+n0->n2
+n5 [shape=circle ]
+n2->n5
+n6 [shape=circle color=red]
+n2->n6
+}
