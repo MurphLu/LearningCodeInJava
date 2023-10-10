@@ -1,4 +1,4 @@
-package org.algorithm.recursion;
+package org.algorithm.recursion.dp;
 
 // 一个正数数组，其中包含 n 个数字，代表 n 个硬币，每个硬币的面值可能相同也可能不同
 // 给出一个目标金额，求最少多少枚硬币可以满足该目标金额

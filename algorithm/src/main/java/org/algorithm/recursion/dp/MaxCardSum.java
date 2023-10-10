@@ -1,6 +1,7 @@
-package org.algorithm.recursion;
+package org.algorithm.recursion.dp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,7 +22,9 @@ import java.util.List;
  */
 public class MaxCardSum {
     public static void main(String[] args) {
-        System.out.println(win(new int[]{1,2,3,4,8}));
+        int[] cards = new int[]{1,2,3,4,8};
+        System.out.println(win(cards));
+        System.out.println(winWithDP(cards));
     }
 
     public static int win(int[] nums) {
@@ -43,5 +46,46 @@ public class MaxCardSum {
             return 0;
         }
         return Math.min(first(cards, l + 1, r) ,first(cards, l, r - 1));
+    }
+
+    public static int winWithDP(int[] cards) {
+        int[][] fdp = new int[cards.length][cards.length];
+        int[][] sdp = new int[cards.length][cards.length];
+        for (int i = 0; i < fdp.length; i++) {
+            fdp[i][i] = cards[i];
+        }
+        int row = 0;
+        int col = 1;
+        while (col < cards.length) {
+            int i = row;
+            int j = col;
+            while (i < cards.length && j < cards.length) {
+                fdp[i][j] = Math.max(cards[i] + sdp[i + 1][j], cards[i] + sdp[i][j - 1]);
+                sdp[i][j] = Math.max(fdp[i + 1][j], fdp[i][j - 1]);
+                i++;
+                j++;
+            }
+            col ++;
+        }
+        return Math.max(fdp[0][cards.length - 1], sdp[0][cards.length - 1]);
+    }
+
+    private static void f(int[] cards, int gap, int[][] firDP, int[][] secDP) {
+        if (gap == cards.length) { return ;}
+        /**
+         * return Math.max(cards[l] + second(cards, l+1, r), cards[r] + second(cards, l, r - 1));
+         */
+        for (int i = 0; i + gap < cards.length; i++) {
+            firDP[i][i + gap] = Math.max(cards[i] + secDP[i + 1][i + gap], cards[i] + secDP[i][i + gap - 1]);
+        }
+        s(cards, gap, firDP, secDP);
+    }
+
+    private static void s(int[] cards, int gap,  int[][] firDP, int[][] secDP) {
+        if (gap == cards.length) { return ;}
+        for (int i = 0; i + gap < cards.length; i++) {
+            secDP[i][i + gap] = Math.max(firDP[i + 1][i + gap], firDP[i][i + gap - 1]);
+        }
+        f(cards, gap + 1, firDP, secDP);
     }
 }
