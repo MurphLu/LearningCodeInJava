@@ -26,5 +26,4 @@ public class MinPath {
         }
         return grid[x][y];
     }
-
 }

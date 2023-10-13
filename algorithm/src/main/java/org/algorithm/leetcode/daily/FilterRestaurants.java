@@ -1,4 +1,4 @@
-package org.algorithm.leetcodeDaily;
+package org.algorithm.leetcode.daily;
 
 import java.util.*;
 
