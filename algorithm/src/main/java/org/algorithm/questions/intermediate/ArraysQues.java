@@ -31,12 +31,12 @@ public class ArraysQues {
      *      则a的平均值不变(因为集合元素不会重复)，b的平均值可能会改变 (因为x被取出)
      * 问最多可以进行多少次magic操作?
      */
-    public int magic(int[] num1, int num2) {
+    public int magic(int[] num1, int[] num2) {
         // 求 num1，num2 的平均值 p1, p2
         // 取出拥有较大平均值中在 两个平均值之间的数
         // 在取出的数中拿出最小的一个放到小平均值的数组（使大平均值有更大的提升，使小平均值有更小的提升）
         // 重复以上步骤，直到平均值相等或者平均值之间的数不存在
-        return 0;
+        return process(num1, num2);
     }
 
     public int process(int[] num1, int[] num2) {
@@ -79,6 +79,14 @@ public class ArraysQues {
 
     private double avg(double sum, int count) {
         return sum / count;
+    }
+
+    // 数组中出现最多的前 k 个
+    public List<String> getMostK(String[] strs, int k) {
+        // hashMap 统计次数
+        // 大根堆遍历完 弹
+        // 小根堆 size 为 k，堆满了之后如果有比堆顶大的，那么弹出堆顶，新的进堆，直到完成
+        return new ArrayList<>();
     }
 
 }

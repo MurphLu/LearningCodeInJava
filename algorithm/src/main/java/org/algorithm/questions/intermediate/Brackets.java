@@ -1,5 +1,7 @@
 package org.algorithm.questions.intermediate;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 public class Brackets {
@@ -26,7 +28,7 @@ public class Brackets {
     }
 
     // 最长有效括号字符串
-    public static int maxLength(String s) {
+    public static int maxLength(@NotNull String s) {
         int[] dp = new int[s.length()];
         int pre = 0;
         int res = 0;
