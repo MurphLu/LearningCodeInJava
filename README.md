@@ -1,3 +1,10 @@
-# design_patterns
+## Learning Code IN Java
 
-projects for designPattern
+### design_patterns
+> path -> DesignPatternsDemos
+
+### algorithm
+> path -> algorithm
+
+### Spring
+> path -> LearningSpring

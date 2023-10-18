@@ -7,9 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DesignPatternsDemos" />
-        <module name="Tank" />
+        <module name="SpringLearn" />
         <module name="algorithm" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Tank" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
