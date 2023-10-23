@@ -28,9 +28,12 @@ public class TrapRain {
         for (int i = 1; i < height.length; i++) {
             int cur = height[i];
             // 如果栈为空，或者栈顶 index 在数组中的只不比当前值小，那么当前 index 直接入栈
-            if(stack.isEmpty() || height[stack.peek()] >= cur) {
+            if(stack.isEmpty() || height[stack.peek()] > cur) {
                 stack.push(i);
-            } else {
+            } else if (height[stack.peek()] == cur){
+                stack.pop();
+                stack.push(i);
+            }else {
                 // 当栈不为空，或者栈顶值小于当前值时
                 while (!stack.isEmpty() && height[stack.peek()] < cur) {
                     // 先将栈顶值出栈
