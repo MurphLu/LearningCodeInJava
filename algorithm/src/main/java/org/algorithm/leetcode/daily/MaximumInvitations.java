@@ -23,12 +23,9 @@ public class MaximumInvitations {
             }
             Map<Integer, Integer> map = new HashMap<>();
             int index = 0;
-            while (!map.containsKey(favorite[temp])) {
+            while (!map.containsKey(temp)) {
                 map.put(temp, index++);
                 temp = favorite[temp];
-            }
-            if (map.containsKey(favorite[temp])) {
-
             }
             if (index - map.get(temp) == 2) {
                 twoPointMap.put(temp, Math.max(twoPointMap.getOrDefault(temp, 0), index));
@@ -43,15 +40,5 @@ public class MaximumInvitations {
         }
         twoMax /= 2;
         return Math.max(twoMax, max);
-    }
-
-    private Map<Integer, Integer> getTwoPintCircle(int[] favorite) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < favorite.length; i++) {
-            if (favorite[i] == favorite[favorite[i]]) {
-                map.put(i, i);
-            }
-        }
-        return map;
     }
 }
