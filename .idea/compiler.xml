@@ -7,12 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DesignPatternsDemos" />
-        <module name="SpringLearn" />
+        <module name="JavaBase" />
         <module name="algorithm" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Tank" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SpringLearn" options="" />
+    </option>
   </component>
 </project>
