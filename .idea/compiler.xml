@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DesignPatternsDemos" />
+        <module name="juc" />
         <module name="JavaBase" />
         <module name="algorithm" />
       </profile>
