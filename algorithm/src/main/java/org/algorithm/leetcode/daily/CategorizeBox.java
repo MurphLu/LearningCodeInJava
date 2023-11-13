@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.daily;
 
+import java.util.LinkedList;
+
 public class CategorizeBox {
     public String categorizeBox(int length, int width, int height, int mass) {
         int volume = (int)Math.pow(10, 9);
