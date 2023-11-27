@@ -99,7 +99,7 @@ public class NQueen {
         int res = 0;
 
         while (pos != 0) {
-            // 取出最右侧的 1，也就是 当放置在最后一位 1 处时，通过 process2 计算之后每行可以防止的位置
+            // 取出最右侧的 1，也就是 当放置在最后一位 1 处时，通过 process2 计算之后每行可以放置的位置
             mosRightOne = pos & (~pos + 1);
             // 除去最后一位 1 之后还有多少有效位置，再进行下一轮操作
             pos = pos - mosRightOne;
