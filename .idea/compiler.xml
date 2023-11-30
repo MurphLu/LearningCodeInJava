@@ -2,15 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="DesignPatternsDemos" />
-        <module name="SpringLearn" />
-        <module name="JavaBase" />
+        <module name="java-base" />
         <module name="algorithm" />
+        <module name="design-patterns" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -21,11 +19,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="spring.spring-learn-code" target="1.8" />
-      <module name="spring.spring-learn-code.jmh" target="1.8" />
-      <module name="spring.spring-learn-code.main" target="1.8" />
-      <module name="spring.spring-learn-code.test" target="1.8" />
-      <module name="spring.spring-learn-code.testFixtures" target="1.8" />
+      <module name="java-hase" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
