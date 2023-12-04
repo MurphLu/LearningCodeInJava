@@ -4,6 +4,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ServiceAspect {
+	private static final String EXECUTION = "execution(public void org.spring.learn.service.UserService.*())";
 
-	@Before("execution(public void org.spring.learn.service.UserService.*())")
+	@Before(EXECUTION)
 	public void beforeServiceMethodCall(JoinPoint joinPoint) {
 		System.out.println("-------------------------- before userService call ----------------------------");
 		System.out.println("target: " + joinPoint.getTarget());
@@ -23,7 +25,7 @@ public class ServiceAspect {
 	}
 
 
-	@After("execution(public void org.spring.learn.service.UserService.*())")
+	@After(EXECUTION)
 	public void afterServiceMethodCall(JoinPoint joinPoint) {
 		System.out.println("----------------------------- after userService call  ---------------------------");
 		System.out.println("target: " + joinPoint.getTarget());

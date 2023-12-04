@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="java-base" />
+        <module name="SpringSelfImpl" />
         <module name="algorithm" />
         <module name="design-patterns" />
       </profile>
