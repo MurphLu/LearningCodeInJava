@@ -5,11 +5,14 @@ import org.spring.annotation.Component;
 import org.spring.annotation.Scope;
 import org.spring.annotation.enums.ScopeType;
 
-@Scope(ScopeType.SINGLETON)
 @Component
-public class UserService {
+@Scope(ScopeType.SINGLETON)
+public class OrderService {
+    @Autowired
+    UserService userService;
 
-    public void sayHi() {
-        System.out.println("Hi~~~");
+    public void test() {
+        userService.sayHi();
+        System.out.println(userService);
     }
 }

@@ -1,15 +1,15 @@
 package org.spring;
 
-import org.spring.annotation.BeanDefinition;
-import org.spring.annotation.Component;
-import org.spring.annotation.ComponentScan;
-import org.spring.annotation.Scope;
+import org.spring.annotation.*;
 import org.spring.annotation.enums.ScopeType;
 
+import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +29,27 @@ public class ApplicationContext {
     private void afterConstructor() {
         scan();
         initializeNonLazyBean();
+        System.out.println(singletonObjects);
+    }
+
+    private void initialize() {
+        for (Map.Entry<String, Object> entry: singletonObjects.entrySet()) {
+            Object value = entry.getValue();
+            Field[] fields = value.getClass().getDeclaredFields();
+            System.out.println(Arrays.toString(fields));
+            for (Field field: fields) {
+                if(field.isAnnotationPresent(Autowired.class)) {
+                    Class<?> clazz = field.getType();
+                    Object obj = getBean(clazz);
+                    field.setAccessible(true);
+                    try {
+                        field.set(value, obj);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -118,7 +139,24 @@ public class ApplicationContext {
             String beanName = entry.getKey();
             BeanDefinition beanDefinition = entry.getValue();
             if(!beanDefinition.isLazy()) {
+                if (singletonObjects.containsKey(beanName)) {
+                    continue;
+                }
+
                 Object o = createBean(beanName, beanDefinition);
+                Field[] fields = beanDefinition.getType().getDeclaredFields();
+                for (Field field: fields) {
+                    field.setAccessible(true);
+                    try {
+                        String fieldName = field.getName();
+                        fieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
+                        Object value = getBean(fieldName);
+                        field.set(o, value);
+                        singletonObjects.put(fieldName, value);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 singletonObjects.put(beanName, o);
             }
         }
@@ -161,18 +199,21 @@ public class ApplicationContext {
      */
     public Object getBean(String beanName) {
         if(!beanDefinitionMap.containsKey(beanName)) {
-            throw new NullPointerException("can not find " + beanName + "in spring context");
+            throw new NullPointerException("can not find " + beanName + " in spring context");
         }
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
         if (beanDefinition.getScopeType() == ScopeType.SINGLETON) {
-            if(!beanDefinition.isLazy()) {
-                return singletonObjects.get(beanName);
-            } else {
-                return getLazyBean(beanName, beanDefinition);
-            }
+            return getSingletonObjectOrCreate(beanName, beanDefinition);
         } else {
             return createBean(beanName, beanDefinition);
         }
+    }
+
+    private Object getSingletonObjectOrCreate(String beanName, BeanDefinition beanDefinition) {
+        if (singletonObjects.containsKey(beanName)) {
+            return singletonObjects.get(beanName);
+        }
+        return createBean(beanName, beanDefinition);
     }
 
     /**
@@ -198,8 +239,7 @@ public class ApplicationContext {
      * @param <T> T
      */
     public <T> T getBean(Class<T> clazz) {
-        String defaultBeanName = getDefaultBeanName(clazz);
-        Object o = getBean(defaultBeanName);
+        Object o = getBean(getDefaultBeanName(clazz));
         return o == null ? null : (T)o;
     }
 
@@ -209,9 +249,6 @@ public class ApplicationContext {
      * @return 返回默认 bean 名字
      */
     private String getDefaultBeanName(Class<?> clazz) {
-        String className = clazz.getName();
-        String beanName = className.substring(className.lastIndexOf(".") + 1);
-        beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
-        return beanName;
+        return Introspector.decapitalize(clazz.getSimpleName());
     }
 }
