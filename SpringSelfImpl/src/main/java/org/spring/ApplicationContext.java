@@ -32,26 +32,6 @@ public class ApplicationContext {
         System.out.println(singletonObjects);
     }
 
-    private void initialize() {
-        for (Map.Entry<String, Object> entry: singletonObjects.entrySet()) {
-            Object value = entry.getValue();
-            Field[] fields = value.getClass().getDeclaredFields();
-            System.out.println(Arrays.toString(fields));
-            for (Field field: fields) {
-                if(field.isAnnotationPresent(Autowired.class)) {
-                    Class<?> clazz = field.getType();
-                    Object obj = getBean(clazz);
-                    field.setAccessible(true);
-                    try {
-                        field.set(value, obj);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-    }
-
     /**
      * 扫描 configClass 中指定的包
      */
