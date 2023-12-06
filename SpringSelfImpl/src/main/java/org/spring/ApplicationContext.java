@@ -2,15 +2,16 @@ package org.spring;
 
 import org.spring.annotation.*;
 import org.spring.annotation.enums.ScopeType;
+import org.spring.interfaces.BeanNameAware;
 
 import java.beans.Introspector;
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ApplicationContext {
@@ -19,17 +20,19 @@ public class ApplicationContext {
     private final Map<String, Object> singletonObjects;
     private final Map<String, BeanDefinition> beanDefinitionMap;
 
+    private final List<BeanPostProcessor> beanPostProcessorList;
+
     public ApplicationContext(Class<?> appConfigClass) {
         this.configClass = appConfigClass;
         this.singletonObjects = new HashMap<>();
         this.beanDefinitionMap = new HashMap<>();
+        this.beanPostProcessorList = new ArrayList<>();
         afterConstructor();
     }
 
     private void afterConstructor() {
         scan();
         initializeNonLazyBean();
-        System.out.println(singletonObjects);
     }
 
     /**
@@ -97,6 +100,17 @@ public class ApplicationContext {
      */
     private void generateBeanDefinition(Class<?> aClass, String className) {
         if (aClass.isAnnotationPresent(Component.class)) {
+            if (BeanPostProcessor.class.isAssignableFrom(aClass)) {
+                try {
+                    BeanPostProcessor processor = (BeanPostProcessor)aClass.getConstructor(new Class[]{}).newInstance();
+                    beanPostProcessorList.add(processor);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                         NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
+                return;
+            }
+
             Component component = aClass.getAnnotation(Component.class);
             String beanName = component.value();
             beanName = beanName.isEmpty() ? getDefaultBeanName(aClass) : beanName;
@@ -118,57 +132,58 @@ public class ApplicationContext {
         for (Map.Entry<String, BeanDefinition> entry: beanDefinitionMap.entrySet()) {
             String beanName = entry.getKey();
             BeanDefinition beanDefinition = entry.getValue();
-            if(!beanDefinition.isLazy()) {
-                if (singletonObjects.containsKey(beanName)) {
-                    continue;
-                }
-
-                Object o = createBean(beanName, beanDefinition);
-                Field[] fields = beanDefinition.getType().getDeclaredFields();
-                for (Field field: fields) {
-                    field.setAccessible(true);
-                    try {
-                        String fieldName = field.getName();
-                        fieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
-                        Object value = getBean(fieldName);
-                        field.set(o, value);
-                        singletonObjects.put(fieldName, value);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                singletonObjects.put(beanName, o);
+            if(!beanDefinition.isLazy() && !singletonObjects.containsKey(beanName)) {
+                singletonObjects.put(beanName, createBean(beanName, beanDefinition));
             }
         }
     }
 
     /**
      * 实例化 Bean
-     * @param name bean name
+     * @param beanName bean name
      * @param beanDefinition beanDefinition
      * @return 返回实例化完成的 Bean
      */
-    private Object createBean(String name, BeanDefinition beanDefinition) {
-        Constructor<?>[] constructors = beanDefinition.getType().getConstructors();
-        for (Constructor<?> cons: constructors) {
-            int paramCount = cons.getParameterCount();
-            if (paramCount == 0) {
-                return invocationNonParamConstructor(cons);
+    private Object createBean(String beanName, BeanDefinition beanDefinition) {
+        Class<?> clazz = beanDefinition.getType();
+        try{
+            Object instance = clazz.getConstructor(new Class[]{}).newInstance();
+            setProperties(instance, beanDefinition);
+
+            if (instance instanceof BeanNameAware) {
+                ((BeanNameAware)instance).setBeanName(beanName);
             }
+
+            for (BeanPostProcessor processor : beanPostProcessorList) {
+                processor.postProcessBeforeInitialization(instance, beanName);
+            }
+
+            if(instance instanceof InitializeBean) {
+                ((InitializeBean) instance).afterPropertiesSet();
+            }
+            for (BeanPostProcessor processor : beanPostProcessorList) {
+                instance = processor.postProcessAfterInitialization(instance, beanName);
+            }
+            return instance;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    /**
-     * 调用无参构造方法
-     * @param constructor 无参构造方法
-     * @return 返回实例
-     */
-    private Object invocationNonParamConstructor(Constructor<?> constructor) {
-        try {
-            return constructor.newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+    private void setProperties(Object instance, BeanDefinition beanDefinition) {
+        Field[] fields = beanDefinition.getType().getDeclaredFields();
+        for (Field field: fields) {
+            if (field.isAnnotationPresent(Autowired.class)) {
+                field.setAccessible(true);
+                try {
+                    String fieldName = field.getName();
+                    fieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
+                    Object value = getBean(fieldName);
+                    field.set(instance, value);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -183,32 +198,12 @@ public class ApplicationContext {
         }
         BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
         if (beanDefinition.getScopeType() == ScopeType.SINGLETON) {
-            return getSingletonObjectOrCreate(beanName, beanDefinition);
+            if (!singletonObjects.containsKey(beanName)) {
+                singletonObjects.put(beanName, createBean(beanName, beanDefinition));
+            }
+            return singletonObjects.get(beanName);
         } else {
             return createBean(beanName, beanDefinition);
-        }
-    }
-
-    private Object getSingletonObjectOrCreate(String beanName, BeanDefinition beanDefinition) {
-        if (singletonObjects.containsKey(beanName)) {
-            return singletonObjects.get(beanName);
-        }
-        return createBean(beanName, beanDefinition);
-    }
-
-    /**
-     * 获取 lazyBean
-     * @param beanName bean name
-     * @param beanDefinition beanDefinition
-     * @return 返回 lazyBean
-     */
-    private Object getLazyBean(String beanName, BeanDefinition beanDefinition) {
-        if (singletonObjects.containsKey(beanName)){
-            return singletonObjects.get(beanName);
-        } else {
-            Object o = createBean(beanName, beanDefinition);
-            singletonObjects.put(beanName, o);
-            return o;
         }
     }
 
