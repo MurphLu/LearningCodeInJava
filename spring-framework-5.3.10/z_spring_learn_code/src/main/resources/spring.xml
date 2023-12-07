@@ -8,6 +8,6 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
 
 >
-<!--    <context:component-scan base-package="org.spring.learn"/>-->
-	<bean class="org.spring.learn.pojo.Product" />
+    <context:component-scan base-package="org.spring.learn"/>
+<!--	<bean class="org.spring.learn.pojo.Product" />-->
 </beans>

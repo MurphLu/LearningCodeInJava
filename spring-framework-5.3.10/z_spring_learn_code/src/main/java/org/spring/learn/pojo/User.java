@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 @Data
 public class User {
     private boolean admin;
+	private String name;
 }
