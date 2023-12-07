@@ -308,6 +308,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
+		// META-INF/spring.components 文件是否存在，如果在，则直接获取 spring.components 配置的类并扫描
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
 		}
@@ -427,9 +428,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				if (resource.isReadable()) {
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// 是否被 ExcludeFilter IncludeFilters 包含，是否有 Conditional 注解并且是否满足条件
+						// 条件判断完符合则继续
 						if (isCandidateComponent(metadataReader)) {
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setSource(resource);
+							// 是否是独立的类（是静态内部类或者不是内部类），不能是接口或抽象类
+							// 如果是抽象类并且抽象类有设置 Lookup 注解的方法，那么也可以是有效的 bean
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);

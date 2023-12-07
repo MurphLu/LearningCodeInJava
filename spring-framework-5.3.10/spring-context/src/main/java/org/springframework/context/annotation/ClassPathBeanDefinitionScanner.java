@@ -251,6 +251,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	public int scan(String... basePackages) {
 		int beanCountAtScanStart = this.registry.getBeanDefinitionCount();
 
+		// 扫描类并注册 beanDefinition
 		doScan(basePackages);
 
 		// Register annotation config processors, if necessary.
@@ -273,22 +274,31 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
 		for (String basePackage : basePackages) {
+			// 扫描传入的包，获取包下的 Bean 并生成 beanDefinition
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+			//遍历 BeanDefinition
 			for (BeanDefinition candidate : candidates) {
+				// 获取并设置 scope
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				// 获取或生成 beanName，先看注解中是否有设置，如果没有则使用类名生成默认 beanName
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
 				if (candidate instanceof AbstractBeanDefinition) {
+					// 如果是抽象的 definition 设置一些默认值
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
+
 				if (candidate instanceof AnnotatedBeanDefinition) {
+					// 检查是否有 Lazy Primary DependsOn Role Description 注解，并设置
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
+				// 检查 spring 容器中是否已经存在 beanName，不存在则注册
 				if (checkCandidate(beanName, candidate)) {
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					// 注册
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}
@@ -341,6 +351,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (originatingDef != null) {
 			existingDef = originatingDef;
 		}
+		// 检查是否与现有的 beanDefinition 相融，如果相融则返回false 不再注册，否则抛异常
+		// source 是否相同，一个文件被扫描两次
 		if (isCompatible(beanDefinition, existingDef)) {
 			return false;
 		}
