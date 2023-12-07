@@ -18,7 +18,7 @@ import java.beans.PropertyEditorSupport;
  * define:
  * @see AppConfig#customEditorConfigurer()
  * usage:
- * {@link UserService#user}
+ * {@link org.spring.learn.service.typeConverter.TypeConverterCode#user}
  */
 public class StringToUserPropertyEditor extends PropertyEditorSupport implements PropertyEditor {
 	@Override

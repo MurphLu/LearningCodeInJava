@@ -3,6 +3,7 @@ package org.spring.learn.node_code.type_converter;
 import org.spring.learn.config.AppConfig;
 import org.spring.learn.service.OrderService;
 import org.spring.learn.pojo.Order;
+import org.spring.learn.service.typeConverter.TypeConverterCode;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  * and spring can use the convertor convert the string to Order obj
  * like PropertyEditor
  * @see AppConfig#conversionService()
- * @see OrderService#order
+ * @see TypeConverterCode#order
  */
 public class StringToOrderConverter implements ConditionalGenericConverter {
 	@Override

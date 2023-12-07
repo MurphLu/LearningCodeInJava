@@ -2,19 +2,15 @@ package org.spring.learn.config;
 
 import org.spring.learn.node_code.type_converter.StringToOrderConverter;
 import org.spring.learn.node_code.type_converter.StringToUserPropertyEditor;
+import org.spring.learn.pojo.Product;
 import org.spring.learn.pojo.User;
-import org.spring.learn.service.ordered.OrderClassA;
-import org.spring.learn.service.ordered.OrderClassB;
+import org.spring.learn.service.OrderService;
+import org.spring.learn.service.UserService;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.ConversionServiceFactoryBean;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.annotation.Order;
 
 import java.beans.PropertyEditor;
 import java.util.Collections;
@@ -22,26 +18,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * config class for application
+ * spring 内部 Bean 的扫描就是通过添加 Component.class 等的 includeFilters 来实现的
+ * excludeFilters，includeFilters 可以指定任何类
  */
-@ComponentScan("org.spring.learn")
-@EnableAspectJAutoProxy
-@PropertySource("classpath:spring.properties")
-public class AppConfig {
-	@Bean
-	public MessageSource messageSource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename("messages");
-		// 通过指定默认编码，读取 resource 中的中文，防止乱码
-		messageSource.setDefaultEncoding("UTF-8");
-		return messageSource;
-	}
-
-	@Bean
-	public ApplicationListener applicationListener (){
-		return event -> System.out.println("这是一条测试消息 " + event.getSource());
-	}
-
+@ComponentScan(
+		value = "org.spring.learn",
+		excludeFilters = {
+				@ComponentScan.Filter(
+						type = FilterType.ASSIGNABLE_TYPE,
+						classes = OrderService.class
+				)
+		},
+		includeFilters = {
+				@ComponentScan.Filter(
+						type = FilterType.ASSIGNABLE_TYPE,
+						classes = Product.class
+				)
+		})
+public class AppConfigWithFilter {
 	@Bean
 	public CustomEditorConfigurer customEditorConfigurer() {
 		CustomEditorConfigurer customEditorConfigurer = new CustomEditorConfigurer();

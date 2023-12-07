@@ -27,11 +27,8 @@ public class UserService implements ApplicationContextAware {
     @Autowired
     UserDao dao;
 
-	@Value("ZhangSan")
-	User user;
 
     public void sayHi() {
-		System.out.println(user.getName());
         System.out.println(dao.getName() + " Hi");
 		System.out.println("get message:" + context.getBean(MessageSource.class).getMessage("info", null, new Locale("en")));
     }
