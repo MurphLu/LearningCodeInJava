@@ -920,10 +920,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// Trigger initialization of all non-lazy singleton beans...
 		// 遍历所有 beanName
 		for (String beanName : beanNames) {
-			// 获取
+			// 获取合并后的 BeanDefinition
+			// 比如如果 BeanDefinition 有继承关系，则会将父类中的定义合并过来，
+			// 并将最终合并完的 beanDefinition 存在 mergedBeanDefinitions
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			// 判断是否为 BeanDefinition是否为抽象（否），是否单例（是），是否是懒加载Bean（否）
+			// 非抽象非懒加载的单例 bean
+			// 比如这样就可以定义一个抽象 beanDefinition, 继承与此抽象的 bean
+			// <bean id="user" class="org.spring.learn.pojo.User" scope="prototype" abstract="true"/ >
+			// 这样 UserService 会继承自 user，使得 UserService 也变成 prototype 的
+			// <bean id="UserService" class="org.spring.learn.service.UserService" parent="user" />
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
+				// 是否为工厂 Bean，
 				if (isFactoryBean(beanName)) {
+					// 获取 factoryBean 对象，
+					// factoryBean 在调用 getBean 时会加 & 前缀，但是单例池里的 beanName 不会包含 &
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
 					if (bean instanceof FactoryBean) {
 						FactoryBean<?> factory = (FactoryBean<?>) bean;
@@ -938,17 +949,22 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 									((SmartFactoryBean<?>) factory).isEagerInit());
 						}
 						if (isEagerInit) {
+							// 创建 Bean 对象（getObject()返回的对象）
 							getBean(beanName);
 						}
 					}
 				}
 				else {
+					// 创建 Bean 对象
 					getBean(beanName);
 				}
 			}
 		}
 
 		// Trigger post-initialization callback for all applicable beans...
+		// 所有单例 bean 创建完之后，遍历每个单例 bean
+		// 如果 bean 有实现 SmartInitializingSingleton 接口，
+		// 则调用接口方法 afterSingletonsInstantiated
 		for (String beanName : beanNames) {
 			Object singletonInstance = getSingleton(beanName);
 			if (singletonInstance instanceof SmartInitializingSingleton) {
