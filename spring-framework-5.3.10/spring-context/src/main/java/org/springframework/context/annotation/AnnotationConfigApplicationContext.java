@@ -103,7 +103,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 		this();
 		// 扫描并生成并注册 beanDefinition
 		scan(basePackages);
-
+		// 准备工作，初始化非懒加载 bean
 		refresh();
 	}
 
