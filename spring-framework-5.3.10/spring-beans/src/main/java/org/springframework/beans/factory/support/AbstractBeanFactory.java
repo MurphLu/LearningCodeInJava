@@ -251,6 +251,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// 是否有 & 前缀，有的话去掉
 		// 是否是别名，是别名的话转为 beanName
+		// 获取 map 中实际存储的 beanName
 		String beanName = transformedBeanName(name);
 		Object beanInstance;
 
@@ -272,12 +273,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		else {
+			// 检查当前 bean 是否在创建，循环依赖相关
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
 
+			// 如果当前 Bean 工厂中不存在该类的定义则去父工厂中查找，并调用父工厂的 getBean 获取 Bean
 			// Check if bean definition exists in this factory.
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
@@ -300,6 +303,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 
+
 			if (!typeCheckOnly) {
 				markBeanAsCreated(beanName);
 			}
@@ -311,20 +315,27 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					beanCreation.tag("beanType", requiredType::toString);
 				}
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+				// 检查 BeanDefinition 不是抽象的，如果是则抛错
 				checkMergedBeanDefinition(mbd, beanName, args);
 
+				// 获取创建当前 Bean 所依赖的 bean @DependsOn 方式依赖
 				// Guarantee initialization of beans that the current bean depends on.
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
+					// 遍历，确保所有依赖的 bean 都已经创建好
 					for (String dep : dependsOn) {
+						// 依赖的 bean 是否也依赖当前要创建的 bean （检查循环依赖）
 						if (isDependent(beanName, dep)) {
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						// 保存依赖/被依赖关系
 						registerDependentBean(dep, beanName);
+						// 创建/获取 依赖的 Bean
 						try {
 							getBean(dep);
 						}
+						// 创建/获取有问题则抛出错误
 						catch (NoSuchBeanDefinitionException ex) {
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"'" + beanName + "' depends on missing bean '" + dep + "'", ex);
@@ -333,7 +344,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				if (mbd.isSingleton()) {
+				if (mbd.isSingleton()) { // 创建单例 bean
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);
@@ -349,7 +360,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
-				else if (mbd.isPrototype()) {
+				else if (mbd.isPrototype()) { // 创建 prototype bean
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
 					try {

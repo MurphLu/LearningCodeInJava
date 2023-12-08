@@ -61,6 +61,13 @@ public class Application {
 	 * 通过 xml 初始化 context
  	 */
 
+	private static ApplicationContext parent() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+		ClassPathXmlApplicationContext context1 = new ClassPathXmlApplicationContext("spring.xml");
+		context1.setParent(context);
+		return context1;
+	}
+
 	private static ApplicationContext withXmlConfig() {
         ClassPathXmlApplicationContext context1 = new ClassPathXmlApplicationContext("spring.xml");
         UserService service2 = context1.getBean(UserService.class);
