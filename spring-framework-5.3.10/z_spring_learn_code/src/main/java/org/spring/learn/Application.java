@@ -22,7 +22,7 @@ public class Application {
 		System.out.println(context.getBean("serviceFactoryBean"));
 		//		getBeanTest(context);
 
-//		testTypeConverter(context);
+		testTypeConverter(context);
 
 //		testComparator(context);
 
@@ -42,17 +42,17 @@ public class Application {
 		return context;
 	}
 
-	private static void testComparator(AnnotationConfigApplicationContext context) {
+	private static void testComparator(ApplicationContext context) {
 		OrderComparatorCodes.testWithAnnotation(context);
 		OrderComparatorCodes.testWithInterface(context);
 	}
 
-	private static void testTypeConverter(AnnotationConfigApplicationContext context) {
+	private static void testTypeConverter(ApplicationContext context) {
 		TypeConverterCode code = context.getBean(TypeConverterCode.class);
 		code.test();
 	}
 
-	private static void getBeanTest(AnnotationConfigApplicationContext context) {
+	private static void getBeanTest(ApplicationContext context) {
 		UserService bean = context.getBean(UserService.class);
 		bean.sayHi();
 	}
