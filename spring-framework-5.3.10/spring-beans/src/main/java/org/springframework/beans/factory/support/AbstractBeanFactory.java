@@ -314,7 +314,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (requiredType != null) {
 					beanCreation.tag("beanType", requiredType::toString);
 				}
+				// 获取要创建 bean 的 beanDefinition
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+
 				// 检查 BeanDefinition 不是抽象的，如果是则抛错
 				checkMergedBeanDefinition(mbd, beanName, args);
 
@@ -347,6 +349,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (mbd.isSingleton()) { // 创建单例 bean
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
+							// 调用 createBean 实例化 bean
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {
@@ -365,6 +368,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					Object prototypeInstance = null;
 					try {
 						beforePrototypeCreation(beanName);
+						// 调用 createBean 实例化 bean
 						prototypeInstance = createBean(beanName, mbd, args);
 					}
 					finally {
@@ -374,6 +378,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				else {
+					// 是否有其他 scope，比如 springMVC 中的 'request', 'session'
 					String scopeName = mbd.getScope();
 					if (!StringUtils.hasLength(scopeName)) {
 						throw new IllegalStateException("No scope name defined for bean ´" + beanName + "'");
@@ -383,6 +388,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
 					}
 					try {
+						// scope 可以实现自己的 get 逻辑，从 scope 缓存池拿，或者直接创建
 						Object scopedInstance = scope.get(beanName, () -> {
 							beforePrototypeCreation(beanName);
 							try {
