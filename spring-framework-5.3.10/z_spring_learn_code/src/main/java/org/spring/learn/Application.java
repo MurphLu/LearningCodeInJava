@@ -24,7 +24,7 @@ public class Application {
 
 		testTypeConverter(context);
 
-//		testComparator(context);
+		testComparator(context);
 
 //		MetaDataCodes.testMetaData();
 	}

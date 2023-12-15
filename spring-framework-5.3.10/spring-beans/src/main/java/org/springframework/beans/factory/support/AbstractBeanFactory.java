@@ -1547,6 +1547,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			throws CannotLoadBeanClassException {
 
 		try {
+			// 如果 bean 的类已经加载了，那么直接返回
 			if (mbd.hasBeanClass()) {
 				return mbd.getBeanClass();
 			}
@@ -1555,6 +1556,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						() -> doResolveBeanClass(mbd, typesToMatch), getAccessControlContext());
 			}
 			else {
+				// 否则调用 resolveBeanClass 加载 beanClass
 				return doResolveBeanClass(mbd, typesToMatch);
 			}
 		}
@@ -1594,8 +1596,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 		}
 
+		// 获取类名
 		String className = mbd.getBeanClassName();
 		if (className != null) {
+			// 如果通过 xml 定义的类为表达式，那么需要通过解析表达式获得类名
 			Object evaluated = evaluateBeanDefinitionString(className, mbd);
 			if (!className.equals(evaluated)) {
 				// A dynamically resolved expression, supported as of 4.2...
@@ -1610,6 +1614,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					throw new IllegalStateException("Invalid class name expression result: " + evaluated);
 				}
 			}
+			// 只解析有表达式的类，解析完直接返回
 			if (freshResolve) {
 				// When resolving against a temporary class loader, exit early in order
 				// to avoid storing the resolved Class in the bean definition.
@@ -1628,6 +1633,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		// Resolve regularly, caching the result in the BeanDefinition...
+		// 正常处理的类，加载完之后更新属性 字符串 -> class，之后就可以直接获取到类
 		return mbd.resolveBeanClass(beanClassLoader);
 	}
 
