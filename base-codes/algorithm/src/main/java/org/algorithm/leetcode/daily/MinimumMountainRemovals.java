@@ -12,6 +12,7 @@ import java.util.List;
  * arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
  * arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
  * 给你整数数组 nums​ ，请你返回将 nums 变成 山形状数组 的最少 删除次数。
+ *
  */
 public class MinimumMountainRemovals {
     public static void main(String[] args) {
