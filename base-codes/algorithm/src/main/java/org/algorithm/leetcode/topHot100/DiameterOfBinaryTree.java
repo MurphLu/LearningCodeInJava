@@ -5,17 +5,11 @@ public class DiameterOfBinaryTree {
     static class Info {
         int diameter;
         int maxLength;
-//        int right;
 
         public Info(int diameter, int maxLength) {
             this.diameter = diameter;
             this.maxLength = maxLength;
-//            this.right = right;
         }
-
-//        private int getMax() {
-//            return Math.max(left, right);
-//        }
     }
     public int diameterOfBinaryTree(TreeNode root) {
         Info info = process(root);
