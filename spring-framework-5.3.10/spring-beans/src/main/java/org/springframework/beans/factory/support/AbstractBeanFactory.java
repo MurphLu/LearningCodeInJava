@@ -1441,6 +1441,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 								"Could not resolve parent bean definition '" + bd.getParentName() + "'", ex);
 					}
 					// Deep copy with overridden values.
+					// BeanDefinition 的属性覆盖父 BeanDefinition 的属性，合并
 					mbd = new RootBeanDefinition(pbd);
 					mbd.overrideFrom(bd);
 				}

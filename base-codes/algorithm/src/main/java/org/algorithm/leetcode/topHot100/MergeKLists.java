@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.ListNode;
+
 public class MergeKLists {
     public ListNode mergeKLists(ListNode[] lists) {
         int k = lists.length;

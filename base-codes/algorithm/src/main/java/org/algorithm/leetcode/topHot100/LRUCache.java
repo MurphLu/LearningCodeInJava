@@ -1,7 +1,8 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.ListNode;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LRUCache {

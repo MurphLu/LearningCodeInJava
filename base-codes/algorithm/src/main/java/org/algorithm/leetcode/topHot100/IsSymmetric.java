@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.TreeNode;
+
 public class IsSymmetric {
     public boolean isSymmetric(TreeNode root) {
         if (root == null || (root.left == null && root.right == null)){

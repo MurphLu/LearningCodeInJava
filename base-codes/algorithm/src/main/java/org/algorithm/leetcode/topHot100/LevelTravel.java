@@ -1,6 +1,6 @@
 package org.algorithm.leetcode.topHot100;
 
-import com.sun.source.tree.Tree;
+import org.algorithm.leetcode.ds.TreeNode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

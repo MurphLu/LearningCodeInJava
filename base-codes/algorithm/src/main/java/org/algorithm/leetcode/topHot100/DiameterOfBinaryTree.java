@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.TreeNode;
+
 public class DiameterOfBinaryTree {
 
     static class Info {

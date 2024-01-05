@@ -1,6 +1,6 @@
 package org.algorithm.leetcode.daily;
 
-import org.algorithm.leetcode.topHot100.TreeNode;
+import org.algorithm.leetcode.ds.TreeNode;
 
 /**
  * 给定一个二叉搜索树 root (BST)，请将它的每个节点的值替换成树中大于或者等于该节点值的所有节点值之和。

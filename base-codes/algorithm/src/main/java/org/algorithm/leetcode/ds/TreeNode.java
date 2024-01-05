@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.topHot100;
+package org.algorithm.leetcode.ds;
 
 public class TreeNode {
     public int val;

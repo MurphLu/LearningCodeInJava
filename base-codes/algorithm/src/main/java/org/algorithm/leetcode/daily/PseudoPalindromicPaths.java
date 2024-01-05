@@ -1,6 +1,6 @@
 package org.algorithm.leetcode.daily;
 
-import org.algorithm.leetcode.topHot100.TreeNode;
+import org.algorithm.leetcode.ds.TreeNode;
 
 import java.util.*;
 

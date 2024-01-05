@@ -1,4 +1,7 @@
 package org.algorithm.leetcode.topHot100;
+
+import org.algorithm.leetcode.ds.ListNode;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {

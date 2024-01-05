@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.ListNode;
+
 public class SortList {
     public static void main(String[] args) {
         SortList s = new SortList();

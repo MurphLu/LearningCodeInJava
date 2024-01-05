@@ -1,5 +1,7 @@
 package org.algorithm.leetcode.topHot100;
 
+import org.algorithm.leetcode.ds.ListNode;
+
 public class ReverseKGroup {
     public static void main(String[] args) {
         ReverseKGroup r = new ReverseKGroup();
