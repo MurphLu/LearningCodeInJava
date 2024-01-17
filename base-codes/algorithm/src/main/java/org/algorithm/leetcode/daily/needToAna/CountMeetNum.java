@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.needToAna;
 
 import java.util.Arrays;
 
