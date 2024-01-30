@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//1,1,1,2,3,2,3
+
 public class FindRotateSteps {
     public static void main(String[] args) {
         System.out.println(new FindRotateSteps().findRotateSteps("ababcab", "acbaacba"));

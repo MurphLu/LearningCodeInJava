@@ -31,6 +31,7 @@ import java.util.Arrays;
  *
  * 1 <= num1 <= num2 <= 1022
  * 1 <= min_sum <= max_sum <= 400
+ *
  */
 public class CountMeetNum {
     public static void main(String[] args) {
