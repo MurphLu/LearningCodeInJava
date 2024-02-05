@@ -137,7 +137,9 @@ public class MaxResult {
         dp[start] = max;
         return max;
     }
+
     // 0, 1, 2
+    // 如果 k 很大的话 每个元素入堆出堆都需要 k*log k 的时间复杂度，会超时
     public int maxResult1(int[] nums, int k) {
         int[] dp = new int[nums.length];
 
@@ -156,7 +158,9 @@ public class MaxResult {
         return dp[nums.length - 1];
     }
 
-    // 双端单调队列
+    // 双端单调队列，每个 dp index 入队一次，出队一次，
+    // 队头出超出当前元素 k 之前的元素，
+    // 无论什么情况下遍历到的元素的 dp 值都会入队，保证任何情况下都可以拿到当前位置前 k 个范围内最大的 dp 值
     public int maxResult3(int[] nums, int k) {
         int n = nums.length;
         int[] dp = new int[n];
