@@ -616,6 +616,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
+		// 在 bean 创建的时候会调用先将该 beanName 存入 singletonsCurrentlyInCreation 中
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -623,6 +624,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			// 在 bean 创建过程中会向 singletonFactories 添加 SingletonFactory，后续属性填充时，
+			// 如果有循环依赖涉及到该bean，那么就会直接调用 getEarlyBeanReference 来处理得到最终需要的对象（代理对象等）
+			// 只会调用一次，调用完之后就会将处理完的 bean 移到 earlySingletonObjects 中
+			// getEarlyBeanReference 如果有代理对象会返回代理对象
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 

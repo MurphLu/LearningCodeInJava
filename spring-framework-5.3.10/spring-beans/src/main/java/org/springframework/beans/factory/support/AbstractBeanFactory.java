@@ -257,6 +257,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Eagerly check singleton cache for manually registered singletons.
 		// 从单例池中获取 bean
+		// 从三级缓存中查找单例 bean
+		// singletonObjects ～ 最终单例池
+		// earlySingletonObjects ～ 未填充属性的单例池
+		// singletonFactories ～ beanFactory, 用来解决循环依赖中代理对象等的问题
 		Object sharedInstance = getSingleton(beanName);
 		// 如果单例池中已经存在
 		if (sharedInstance != null && args == null) {
@@ -347,6 +351,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 				// Create bean instance.
 				if (mbd.isSingleton()) { // 创建单例 bean
+					// 此 lambda 会将 beanName 添加到 singletonsCurrentlyInCreation 中
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							// 调用 createBean 实例化 bean
