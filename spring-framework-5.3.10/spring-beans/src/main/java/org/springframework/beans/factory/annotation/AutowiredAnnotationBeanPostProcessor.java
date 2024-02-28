@@ -322,8 +322,10 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 						else if (primaryConstructor != null) {
 							continue;
 						}
+						// 判断构造方法是否有 @Autowire 注解
 						MergedAnnotation<?> ann = findAutowiredAnnotation(candidate);
 						if (ann == null) {
+							// 判断是否为代理类，如果是，那么去找被代理类上是否有 @Autowire 注解
 							Class<?> userClass = ClassUtils.getUserClass(beanClass);
 							if (userClass != beanClass) {
 								try {
@@ -336,13 +338,16 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 								}
 							}
 						}
+						// 如果加了 @Autowire
 						if (ann != null) {
+							// 如果某个构造方法上有一个 required 为 true 的构造方法，那么就不能有 @Autowire 的构造方法
 							if (requiredConstructor != null) {
 								throw new BeanCreationException(beanName,
 										"Invalid autowire-marked constructor: " + candidate +
 										". Found constructor with 'required' Autowired annotation already: " +
 										requiredConstructor);
 							}
+							// @Autowired(required=true)
 							boolean required = determineRequiredStatus(ann);
 							if (required) {
 								if (!candidates.isEmpty()) {
@@ -353,12 +358,15 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 								}
 								requiredConstructor = candidate;
 							}
+							// 记录所有加了 @Autowire 的构造方法
 							candidates.add(candidate);
 						}
+						//如果没有 @Autowire，且构造方法参数个数为 0，那么为默认构造方法
 						else if (candidate.getParameterCount() == 0) {
 							defaultConstructor = candidate;
 						}
 					}
+					// 如果有 @Autowire 的构造方法，且有无参构造方法，那么无参构造方法也加入其中
 					if (!candidates.isEmpty()) {
 						// Add default constructor to list of optional constructors, as fallback.
 						if (requiredConstructor == null) {
@@ -372,8 +380,10 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 										"default constructor to fall back to: " + candidates.get(0));
 							}
 						}
+						// 返回加了 @Autowire 的构造方法
 						candidateConstructors = candidates.toArray(new Constructor<?>[0]);
 					}
+					// 只有一个构造方法且有参，直接返回
 					else if (rawCandidates.length == 1 && rawCandidates[0].getParameterCount() > 0) {
 						candidateConstructors = new Constructor<?>[] {rawCandidates[0]};
 					}
@@ -384,7 +394,7 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 					else if (nonSyntheticConstructors == 1 && primaryConstructor != null) {
 						candidateConstructors = new Constructor<?>[] {primaryConstructor};
 					}
-					else {
+					else { // 都不符合的话直接返回 null
 						candidateConstructors = new Constructor<?>[0];
 					}
 					this.candidateConstructorsCache.put(beanClass, candidateConstructors);

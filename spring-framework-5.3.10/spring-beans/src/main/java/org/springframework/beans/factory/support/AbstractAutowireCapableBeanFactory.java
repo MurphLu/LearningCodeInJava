@@ -1228,17 +1228,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean resolved = false;
 		boolean autowireNecessary = false;
 		// 原型 BeanDefinition 会多次创建 bean，那么后续判断完之后可以将构造方法缓存在 beanDefinition 中，再次创建时直接使用
+		// args 为 getBean 时传入的参数
 		if (args == null) {
 			synchronized (mbd.constructorArgumentLock) {
+				// 缓存 是否已经找到 构造方法 或者 工厂方法
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
 					resolved = true;
+					// 有没有必要进行构造方法参数注入（构造方法是否有参）
 					autowireNecessary = mbd.constructorArgumentsResolved;
 				}
 			}
 		}
+		// 有缓存
 		if (resolved) {
 			// 确定了当前 beanDefinition 的构造方法，及是否需要进行对构造方法的参数进行依赖注入（构造方法注入)，来执行对应的方法
 			if (autowireNecessary) {
+				// 有入参，方法内会拿到构造方法的入参
 				return autowireConstructor(beanName, mbd, null, null);
 			}
 			else {
@@ -1267,6 +1272,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// No special handling: simply use no-arg constructor.
+		// 没有 @Autowired 注解的构造方法，且有多个构造方法或只有一个默认的构造方法
 		return instantiateBean(beanName, mbd);
 	}
 
