@@ -21,9 +21,11 @@ public class ValidPartition {
         boolean[] f = new boolean[n + 1];
         f[0] = true;
         for (int i = 1; i < n; i++) {
-            if (f[i - 1] && nums[i] == nums[i - 1] ||
-                i > 1 && f[i - 2] && (nums[i] == nums[i - 1] && nums[i] == nums[i - 2]) ||
-                    nums[i] == nums[i - 1] + 1 && nums[i] == nums[i - 2] + 2) {
+            if (f[i - 1] // 且 i 之前的元素是否是有效的分割，如果是则继续判断，如果不是，那么直接跳过
+                    && nums[i] == nums[i - 1] || // 是否两个元素相等，如果是，则当前位置与之前元素也可以组成有效的分割
+                i > 1 && f[i - 2]  // 三个元素的情况
+                        && (nums[i] == nums[i - 1] && nums[i] == nums[i - 2]) || // 相等
+                    nums[i] == nums[i - 1] + 1 && nums[i] == nums[i - 2] + 2) { // 递增 1
                 f[n + 1] = true;
             }
         }
