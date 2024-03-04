@@ -5,6 +5,7 @@ import org.algorithm.utils.StringToArray;
 import java.sql.Timestamp;
 import java.util.*;
 
+// 一条路径上只允许有一个质数节点，求一共有多少条不同路径
 public class CountPaths {
     static class Edge {
         Node from;
