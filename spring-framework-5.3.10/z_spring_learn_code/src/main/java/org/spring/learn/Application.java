@@ -17,7 +17,7 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
 		ApplicationContext context = initApplicationContext();
-//		ApplicationContext context1 = withXmlConfig();
+//		ApplicationContext context = withXmlConfig();
 //		filteredContext();
 		System.out.println(context.getBean("serviceFactoryBean"));
 		//		getBeanTest(context);

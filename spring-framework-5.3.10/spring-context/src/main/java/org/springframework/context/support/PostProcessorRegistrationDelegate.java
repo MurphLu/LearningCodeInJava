@@ -79,17 +79,22 @@ final class PostProcessorRegistrationDelegate {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
-
+			// beanFactoryPostProcessors refresh 之前手动添加的
+			// beanFactoryPostProcessors集合一般情况下都是空的，除非我们手动调用容器的addBeanFactoryPostProcessor放法添加
+			// beanFactoryPostProcessors中可能包含了：普通 BeanFactoryPostprocessor对象和 BeanDefinitionRegistryPostProcessor 对象
+			// BeanDefinitionRegistryPostProcessor 对象,会执行自已的 postProcessBeanDefinitionRegistry() 方法
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					// 执行 postProcessBeanDefinitionRegistry 在此期间可以向 beanFactory 中手动添加 beanDefinition
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
 				else {
 					regularPostProcessors.add(postProcessor);
 				}
+				// postProcessBeanFactory 方法是比较靠后的位置执行，此处先将 BeanFactoryPostProcessor 或者 BeanDefinitionRegistryPostProcessor 保存
 			}
 
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
@@ -99,14 +104,18 @@ final class PostProcessorRegistrationDelegate {
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
+			// 如果没有其他特殊操作的话只能拿到这一个
+			// org.springframework.context.annotation.internalConfigurationAnnotationProcessor
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
+				// beanFactory 是否实现了 PriorityOrdered 的 beanFactory
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
 			}
+			// 升序排序
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
 			registryProcessors.addAll(currentRegistryProcessors);
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry, beanFactory.getApplicationStartup());
