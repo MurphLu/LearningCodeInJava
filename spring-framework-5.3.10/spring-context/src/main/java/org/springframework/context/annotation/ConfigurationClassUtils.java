@@ -122,7 +122,9 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 检查是否有 Configuration 注解，并在 beanDefinition 中设置配置类标志位
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
+		// 是否有 Configuration，且 proxyBeanMethods == true，Configuration 默认为 true
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
@@ -134,6 +136,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 如果有 Order 注解，则 beanDefinition 则需设置 order 参数
 		Integer order = getOrder(metadata);
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
@@ -156,12 +159,18 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// Any of the typical annotations found?
+		// 如果有以下注解，则直接返回 true
+		// candidateIndicators.add(Component.class.getName());
+		// candidateIndicators.add(ComponentScan.class.getName());
+		// candidateIndicators.add(Import.class.getName());
+		// candidateIndicators.add(ImportResource.class.getName());
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
 			}
 		}
 
+		// 没有的话检查是否有 @Bean 注解的方法，返回 true 或 false
 		// Finally, let's look for @Bean methods...
 		return hasBeanMethods(metadata);
 	}

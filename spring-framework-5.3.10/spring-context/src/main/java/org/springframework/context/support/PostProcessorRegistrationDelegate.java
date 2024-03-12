@@ -107,6 +107,9 @@ final class PostProcessorRegistrationDelegate {
 			// 如果没有其他特殊操作的话只能拿到这一个
 			// org.springframework.context.annotation.internalConfigurationAnnotationProcessor
 			// ConfigurationClassPostProcessor
+			/**
+			 * @see org.springframework.context.annotation.ConfigurationClassPostProcessor#postProcessBeanDefinitionRegistry(BeanDefinitionRegistry)
+			 */
 			String[] postProcessorNames =
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {

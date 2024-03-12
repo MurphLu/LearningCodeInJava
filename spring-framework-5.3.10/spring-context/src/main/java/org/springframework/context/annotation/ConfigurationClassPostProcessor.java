@@ -245,7 +245,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// 该 registry （beanFactory）已执行 postProcessBeanDefinitionRegistry
 		this.registriesPostProcessed.add(registryId);
 
-		//
+		// 解析配置类并加载 BeanDefinitions
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -277,26 +277,32 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
+		// 获取当前已经加载的 beanDefinition
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
+		// 遍历 beanDefinition
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+			// 如果该 beanDefinition 有 configurationClass 标志为，则说明该类已经作为配置类解析过，直接跳过
 			if (beanDef.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE) != null) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
+			// 如果是新加入的配置类，则添加到需要解析的 list 中，用来后续解析
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
 
 		// Return immediately if no @Configuration classes were found
+		// 没有找到 @Configuration classes 直接返回
 		if (configCandidates.isEmpty()) {
 			return;
 		}
 
 		// Sort by previously determined @Order value, if applicable
+		// 按照 @Order 升序排列，有则返回具体值，没有则返回最大值（优先级最低）
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
