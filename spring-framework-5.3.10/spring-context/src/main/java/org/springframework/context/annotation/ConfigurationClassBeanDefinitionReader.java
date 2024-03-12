@@ -146,14 +146,20 @@ class ConfigurationClassBeanDefinitionReader {
 			return;
 		}
 
+
 		if (configClass.isImported()) {
+			// 将被导入的类生成 BeanDefinition 并注册到 spring 容器中
+			// @Component 内部类，@Import 所导入的类都是被导入的类
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
+		// @Bean 生成 beanDefinition 并注册
 		for (BeanMethod beanMethod : configClass.getBeanMethods()) {
 			loadBeanDefinitionsForBeanMethod(beanMethod);
 		}
 
+		// 处理 @ImportResource("spring.xml")
 		loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+		// 处理 ImportBeanDefinitionRegistrars，并调用 registerBeanDefinitions 方法
 		loadBeanDefinitionsFromRegistrars(configClass.getImportBeanDefinitionRegistrars());
 	}
 

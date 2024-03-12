@@ -19,3 +19,10 @@ xml 中可以定义 replace，来达到类似的效果
 
 
 ### 配置类解析与扫描
+
+- BeanDefinition 覆盖
+> @Component('a') 重复，报错
+> 
+> @Bean 重复，不会报错，视情况
+> 
+> @Bean 覆盖 @Component，默认可以，配置可控是否允许覆盖

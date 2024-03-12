@@ -85,6 +85,8 @@ abstract class ConfigurationClassUtils {
 	public static boolean checkConfigurationClassCandidate(
 			BeanDefinition beanDef, MetadataReaderFactory metadataReaderFactory) {
 
+		// 通过 @Bean 生成的 BeanDefinition beanClassName 为空
+		// @Bean 定义配置类是不起作用的
 		String className = beanDef.getBeanClassName();
 		if (className == null || beanDef.getFactoryMethodName() != null) {
 			return false;
@@ -125,10 +127,13 @@ abstract class ConfigurationClassUtils {
 		// 检查是否有 Configuration 注解，并在 beanDefinition 中设置配置类标志位
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
 		// 是否有 Configuration，且 proxyBeanMethods == true，Configuration 默认为 true
-		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
+		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) { // full 配置类
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
-		else if (config != null || isConfigurationCandidate(metadata)) {
+		// 	有@Configuration 注解， proxyBeanMethods = false, 不是接口的前提下
+		// 	有注解 @Component， @ComponentScan， @Import， ImportResource 或者 有@Bean注解了的方法
+		// 为 lite 配置类
+		else if (config != null || isConfigurationCandidate(metadata)) { // lite 配置类
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
 		else {
