@@ -4,7 +4,6 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/spring-framework-5.3.10" />
         <option name="modules">
           <set>
@@ -34,6 +33,7 @@
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-webflux" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-webmvc" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-websocket" />
+            <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_mybatis_with_spring" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_learn_code" />
           </set>
         </option>
