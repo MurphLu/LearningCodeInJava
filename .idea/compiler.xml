@@ -19,10 +19,8 @@
         </processorPath>
         <module name="spring.z_mybatis_with_spring.main" />
         <module name="spring.z_spring_learn_code.main" />
+        <module name="spring.z_aop.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="java-hase" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -33,6 +33,7 @@
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-webflux" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-webmvc" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-websocket" />
+            <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_aop" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_mybatis_with_spring" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_learn_code" />
           </set>
