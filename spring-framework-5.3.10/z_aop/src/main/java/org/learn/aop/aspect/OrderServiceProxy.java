@@ -26,4 +26,11 @@ public class OrderServiceProxy {
 	public void test(JoinPoint joinPoint) {
 		System.out.println("aspect delivery");
 	}
+
+	@Before(value = "execution(public void org.learn.aop.service.DeliveryService.test(..)) && args(a, b)", argNames = "a,b")
+	public void testArgs(String a, String b) {
+		System.out.println("++++ test args +++");
+		System.out.println(a);
+		System.out.println(b);
+	}
 }

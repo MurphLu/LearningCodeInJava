@@ -81,9 +81,10 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 						match = mm.matches(method, actualClass);
 					}
 					if (match) {
-						// 如果匹配则将 Advisor 封装成 Interceptor，当前 Advisor 中的 advice 可能即是 MethodBeforeAdvice，也是 Throw
+						// 如果匹配则将 Advisor 封装成 Interceptor，当前 Advisor 中的 advice 可能即是 MethodBeforeAdvice，也是 ThrowsAdviceAdapter
 						MethodInterceptor[] interceptors = registry.getInterceptors(advisor);
 						if (mm.isRuntime()) {
+							// 如果是 runtime 则再封装一层 InterceptorAndDynamicMethodMatcher
 							// Creating a new object instance in the getInterceptors() method
 							// isn't a problem as we normally cache created chains.
 							for (MethodInterceptor interceptor : interceptors) {

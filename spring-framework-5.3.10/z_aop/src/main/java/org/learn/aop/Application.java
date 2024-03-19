@@ -32,6 +32,7 @@ public class Application {
 
 		DeliveryService deliveryService = (DeliveryService) context.getBean("deliveryService");
 		deliveryService.test();
+		deliveryService.test("aaa", "bbb");
  //		testProxy();
 	}
 
