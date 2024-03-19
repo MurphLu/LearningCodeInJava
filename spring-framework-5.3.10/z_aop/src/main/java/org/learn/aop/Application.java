@@ -2,9 +2,7 @@ package org.learn.aop;
 
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInvocation;
-import org.learn.aop.service.OrderService;
-import org.learn.aop.service.UserInterface;
-import org.learn.aop.service.UserService;
+import org.learn.aop.service.*;
 import org.springframework.aop.*;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
@@ -24,10 +22,17 @@ public class Application {
 		UserInterface userService = (UserInterface)context.getBean("userService");
 		userService.test();
 		userService.a();
-		OrderService orderService = (OrderService)context.getBean("orderService");
+		OrderInterface orderService = (OrderInterface)context.getBean("orderService");
+//		orderService.getClass();
 		orderService.orderTest();
 
-//		testProxy();
+
+		CustomerInterface customerInterface = (CustomerInterface) context.getBean("customerService");
+		customerInterface.testDefaultImpl();
+
+		DeliveryService deliveryService = (DeliveryService) context.getBean("deliveryService");
+		deliveryService.test();
+ //		testProxy();
 	}
 
 	private static void testProxy() {

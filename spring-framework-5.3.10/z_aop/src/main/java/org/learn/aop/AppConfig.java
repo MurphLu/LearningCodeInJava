@@ -2,6 +2,7 @@ package org.learn.aop;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.learn.aop.advisor.SelfPontCutAdvisor;
 import org.learn.aop.interceptor.SelfAdvice;
 import org.learn.aop.service.UserService;
 import org.springframework.aop.framework.ProxyFactoryBean;
@@ -12,11 +13,13 @@ import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @ComponentScan("org.learn.aop")
+@Import(DefaultAdvisorAutoProxyCreator.class)
 @EnableAspectJAutoProxy // 注册了 AnnotationAwareAspectJAutoProxyCreator bean
 public class AppConfig {
 
@@ -60,10 +63,10 @@ public class AppConfig {
 		return defaultPointcutAdvisor;
 	}
 
-	// 也可以用 @Import(DefaultAdvisorAutoProxyCreator.class) 生成一个 bean
-	@Bean
-	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
-		return defaultAdvisorAutoProxyCreator;
-	}
+//	 也可以用 @Import(DefaultAdvisorAutoProxyCreator.class) 生成一个 bean
+//	@Bean
+//	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+//		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+//		return defaultAdvisorAutoProxyCreator;
+//	}
 }

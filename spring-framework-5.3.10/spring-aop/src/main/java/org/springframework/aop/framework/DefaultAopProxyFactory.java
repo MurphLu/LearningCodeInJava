@@ -51,13 +51,15 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
-		if (!NativeDetector.inNativeImage() &&
+		if (!NativeDetector.inNativeImage() && // 是不是 GraalVM 虚拟机，是的话直接使用 JdkDynamicAopProxy
+				// isOptimize == true 或 isProxyTargetClass 或 只有 SpringProxy interface 或者没有 interface
 				(config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config))) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {
 				throw new AopConfigException("TargetSource cannot determine target class: " +
 						"Either an interface or a target is required for proxy creation.");
 			}
+			// 被代理类 targetClass 是接口或者 targetClass是 proxyClass，使用 jdk 动态代理
 			if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
 				return new JdkDynamicAopProxy(config);
 			}
