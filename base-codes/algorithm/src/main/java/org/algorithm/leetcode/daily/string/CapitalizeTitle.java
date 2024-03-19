@@ -1,8 +1,4 @@
-package org.algorithm.leetcode.daily;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+package org.algorithm.leetcode.daily.string;
 
 public class CapitalizeTitle {
     public static void main(String[] args) {

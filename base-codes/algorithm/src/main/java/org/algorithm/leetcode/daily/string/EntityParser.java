@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.string;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.tree;
 
 import java.util.LinkedList;
 import java.util.Queue;

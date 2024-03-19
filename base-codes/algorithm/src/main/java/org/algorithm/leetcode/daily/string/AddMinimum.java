@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.string;
 
 /**
  * 给你一个字符串 word ，你可以向其中任何位置插入 "a"、"b" 或 "c" 任意次，返回使 word 有效 需要插入的最少字母数。
