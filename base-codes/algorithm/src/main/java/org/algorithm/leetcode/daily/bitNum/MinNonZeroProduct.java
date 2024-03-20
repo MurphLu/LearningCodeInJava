@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.bitNum;
 
 /**
  * 给你一个正整数 p 。你有一个下标从 1 开始的数组 nums ，这个数组包含范围 [1, 2p - 1] 内所有整数的二进制形式（两端都 包含）。你可以进行以下操作 任意 次：
