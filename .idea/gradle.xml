@@ -36,6 +36,7 @@
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_aop" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_mybatis_with_spring" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_learn_code" />
+            <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_transaction" />
           </set>
         </option>
       </GradleProjectSettings>

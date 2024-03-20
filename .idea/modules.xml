@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_aop/spring.z_aop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_aop/spring.z_aop.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_mybatis_with_spring/spring.z_mybatis_with_spring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_mybatis_with_spring/spring.z_mybatis_with_spring.main.iml" />
     </modules>
   </component>
