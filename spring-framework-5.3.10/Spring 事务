@@ -1,0 +1,19 @@
+```
+test()
+    Spring 事务管理器，创建数据库连接 conn
+    conn.autocommit = false
+    conn.隔离级别
+    conn 放入 ThreadLocal<Map<DataSource, conn>>
+
+    target.test()
+        sql1,
+        sql2
+        a()
+           挂起 --> 挂起对象.conn 连接 -- >
+            Spring 事务管理器，创建数据库连接 conn
+            conn.autocommit = false
+            conn.隔离级别
+            conn 放入 ThreadLocal<Map<DataSource, conn>>
+            恢复
+        sql3
+```

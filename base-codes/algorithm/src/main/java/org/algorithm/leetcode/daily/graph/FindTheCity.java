@@ -1,6 +1,5 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.graph;
 
-import java.lang.management.ManagementPermission;
 import java.util.*;
 
 public class FindTheCity {

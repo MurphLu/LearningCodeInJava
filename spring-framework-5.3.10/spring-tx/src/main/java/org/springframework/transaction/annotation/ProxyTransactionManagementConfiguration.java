@@ -56,6 +56,8 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionAttributeSource transactionAttributeSource() {
+		// AnnotationTransactionAttributeSource 中定义了一个 PointCut
+		// 并且 AnnotationTransactionAttributeSource 可以用来解析 @Transactional 注解，并得到一个 RuleBasedTransactionAttribute 对象
 		return new AnnotationTransactionAttributeSource();
 	}
 
