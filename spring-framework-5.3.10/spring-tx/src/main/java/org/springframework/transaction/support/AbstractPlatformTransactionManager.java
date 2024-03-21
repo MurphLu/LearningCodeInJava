@@ -35,6 +35,7 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.TransactionSuspensionNotSupportedException;
 import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
  * Abstract base class that implements Spring's standard transaction workflow,
@@ -343,10 +344,13 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 		// Use defaults if no transaction definition given.
 		TransactionDefinition def = (definition != null ? definition : TransactionDefinition.withDefaults());
-		// 得到一个新的 DataSourceTransactionObject 对象
+		// 得到一个新的 DataSourceTransactionObject 对象，
+		// 对象中包含从 threadLocal 中获取到的 conHolder，可能为空，如果为空则说明当前线程为开启事务
 		Object transaction = doGetTransaction();
 		boolean debugEnabled = logger.isDebugEnabled();
 
+		// 如果当前线程有开启过事务
+		// transaction.getConnectionHolder().isTransactionActive()
 		if (isExistingTransaction(transaction)) {
 			// Existing transaction found -> check propagation behavior to find out how to behave.
 			return handleExistingTransaction(def, transaction, debugEnabled);
@@ -362,14 +366,19 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			throw new IllegalTransactionStateException(
 					"No existing transaction found for transaction marked with propagation 'mandatory'");
 		}
+		// 在当前 Thread 中没有事务的前提下，以下三个是等价的
 		else if (def.getPropagationBehavior() == TransactionDefinition.PROPAGATION_REQUIRED ||
 				def.getPropagationBehavior() == TransactionDefinition.PROPAGATION_REQUIRES_NEW ||
 				def.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NESTED) {
+			// 没有事务要挂起，不过 TransactionSynchronization 有可能需要挂起
+			// suspendedResources 表示当前线程被关起的资源持有对象（数据库连接，TransactionSynchronization）
 			SuspendedResourcesHolder suspendedResources = suspend(null);
 			if (debugEnabled) {
 				logger.debug("Creating new transaction with name [" + def.getName() + "]: " + def);
 			}
 			try {
+				// 开启事务后，transaction 中就会有数据库连接了，并且 isTransactionActive 为 true
+				// 并返回 TransactionStatus 对象，该对象保存了很多信息，包括被挂起的资源
 				return startTransaction(def, transaction, debugEnabled, suspendedResources);
 			}
 			catch (RuntimeException | Error ex) {
@@ -394,10 +403,15 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	private TransactionStatus startTransaction(TransactionDefinition definition, Object transaction,
 			boolean debugEnabled, @Nullable SuspendedResourcesHolder suspendedResources) {
 
+		// 是否开启一个新的 transactionSynchronization
 		boolean newSynchronization = (getTransactionSynchronization() != SYNCHRONIZATION_NEVER);
+		// 开启的这个事务的状态信息
+		// 事务的定义，用来保存数据库连接的对象，是否是新事务，是否是新的 transactionSynchronization
 		DefaultTransactionStatus status = newTransactionStatus(
 				definition, transaction, true, newSynchronization, debugEnabled, suspendedResources);
+		// 开启事务
 		doBegin(transaction, definition);
+		// 如果需要新开一个 transactionSynchronization，就把新创建的事务的一些状态设置到 transactionSynchronizationManager 中
 		prepareSynchronization(status, definition);
 		return status;
 	}
@@ -409,15 +423,19 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			TransactionDefinition definition, Object transaction, boolean debugEnabled)
 			throws TransactionException {
 
+		// 不支持事务的传播
 		if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NEVER) {
 			throw new IllegalTransactionStateException(
 					"Existing transaction found for transaction marked with propagation 'never'");
 		}
 
+
 		if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NOT_SUPPORTED) {
 			if (debugEnabled) {
 				logger.debug("Suspending current transaction");
 			}
+			//挂起不开启新的事务
+			// 数据库连接不由事务管理器处理，而是 jdbcTemplate 等自己创建
 			Object suspendedResources = suspend(transaction);
 			boolean newSynchronization = (getTransactionSynchronization() == SYNCHRONIZATION_ALWAYS);
 			return prepareTransactionStatus(
@@ -429,6 +447,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				logger.debug("Suspending current transaction, creating new transaction with name [" +
 						definition.getName() + "]");
 			}
+			// 挂起并开启新的事务
 			SuspendedResourcesHolder suspendedResources = suspend(transaction);
 			try {
 				return startTransaction(definition, transaction, debugEnabled, suspendedResources);
@@ -454,6 +473,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				// Usually uses JDBC 3.0 savepoints. Never activates Spring synchronization.
 				DefaultTransactionStatus status =
 						prepareTransactionStatus(definition, transaction, false, false, debugEnabled, null);
+				// 创建 savePoint
 				status.createAndHoldSavepoint();
 				return status;
 			}
@@ -488,6 +508,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				}
 			}
 		}
+		// 默认的话，不用做其他事情，正常同一事务中执行 sql
 		boolean newSynchronization = (getTransactionSynchronization() != SYNCHRONIZATION_NEVER);
 		return prepareTransactionStatus(definition, transaction, false, newSynchronization, debugEnabled, null);
 	}
@@ -533,6 +554,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 							definition.getIsolationLevel() : null);
 			TransactionSynchronizationManager.setCurrentTransactionReadOnly(definition.isReadOnly());
 			TransactionSynchronizationManager.setCurrentTransactionName(definition.getName());
+			// 线程中开启事务之后才会给 synchronizations 赋值一个空 set
 			TransactionSynchronizationManager.initSynchronization();
 		}
 	}
@@ -566,13 +588,19 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 */
 	@Nullable
 	protected final SuspendedResourcesHolder suspend(@Nullable Object transaction) throws TransactionException {
+		// synchronizations 是一个 ThreadLocal<Set<TransactionSynchronization>>
+		// 我们可以在任何地方通过 TransactionSynchronizationManager 给当前线程添加 TransactionSynchronization
+
+		// TransactionSynchronizationManager.isSynchronizationActive，用来判断我们当前线程是否开启过事务
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 			List<TransactionSynchronization> suspendedSynchronizations = doSuspendSynchronization();
 			try {
 				Object suspendedResources = null;
 				if (transaction != null) {
+					// 挂起事务，把 transaction 中的 conn 清空，并把 resource 中的 key-value 一出，并返回数据库连接 conn 对象
 					suspendedResources = doSuspend(transaction);
 				}
+				// 获取并清空当前线程中关于 TransactionSynchronizationManager 的设置
 				String name = TransactionSynchronizationManager.getCurrentTransactionName();
 				TransactionSynchronizationManager.setCurrentTransactionName(null);
 				boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
@@ -581,6 +609,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				TransactionSynchronizationManager.setCurrentTransactionIsolationLevel(null);
 				boolean wasActive = TransactionSynchronizationManager.isActualTransactionActive();
 				TransactionSynchronizationManager.setActualTransactionActive(false);
+				// 返回挂起的 resource，其中包含所有要挂起的事务内容
 				return new SuspendedResourcesHolder(
 						suspendedResources, suspendedSynchronizations, name, readOnly, isolationLevel, wasActive);
 			}
@@ -652,12 +681,16 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 * @return the List of suspended TransactionSynchronization objects
 	 */
 	private List<TransactionSynchronization> doSuspendSynchronization() {
+		// 从 synchronizations 中拿到所设置的 TransactionSynchronization 对象
 		List<TransactionSynchronization> suspendedSynchronizations =
 				TransactionSynchronizationManager.getSynchronizations();
+		// 调用 TransactionSynchronization 的 suspend()
 		for (TransactionSynchronization synchronization : suspendedSynchronizations) {
 			synchronization.suspend();
 		}
+		// 清空 synchronizations
 		TransactionSynchronizationManager.clearSynchronization();
+		// 返回获取到的 TransactionSynchronization
 		return suspendedSynchronizations;
 	}
 
@@ -692,6 +725,9 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		}
 
 		DefaultTransactionStatus defStatus = (DefaultTransactionStatus) status;
+		// 事务本来是要提交的，但是可以强制回滚
+		// 通过该方法可以强制回滚
+		// TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		if (defStatus.isLocalRollbackOnly()) {
 			if (defStatus.isDebug()) {
 				logger.debug("Transactional code has requested rollback");
@@ -700,6 +736,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			return;
 		}
 
+		// 判断次事务在之前是否设置了需要回滚，跟 globalRollbackOnParticipationFailure 有关
 		if (!shouldCommitOnGlobalRollbackOnly() && defStatus.isGlobalRollbackOnly()) {
 			if (defStatus.isDebug()) {
 				logger.debug("Global transaction is marked as rollback-only but transactional code requested commit");
@@ -735,11 +772,12 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 					unexpectedRollback = status.isGlobalRollbackOnly();
 					status.releaseHeldSavepoint();
 				}
-				else if (status.isNewTransaction()) {
+				else if (status.isNewTransaction()) { // 如果当前事务为该方法提交的，那么直接提交
 					if (status.isDebug()) {
 						logger.debug("Initiating transaction commit");
 					}
 					unexpectedRollback = status.isGlobalRollbackOnly();
+					// com.commit()
 					doCommit(status);
 				}
 				else if (isFailEarlyOnGlobalRollbackOnly()) {
@@ -787,6 +825,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 		}
 		finally {
+			// 恢复被挂起的资源到当前线程中
 			cleanupAfterCompletion(status);
 		}
 	}
@@ -821,14 +860,15 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 
 			try {
 				triggerBeforeCompletion(status);
-
+				// 比如 mysql 的 savePoint
 				if (status.hasSavepoint()) {
 					if (status.isDebug()) {
 						logger.debug("Rolling back transaction to savepoint");
 					}
+					// 回滚到上一个 savePoint 的位置
 					status.rollbackToHeldSavepoint();
 				}
-				else if (status.isNewTransaction()) {
+				else if (status.isNewTransaction()) { // 如果是该方法新建的事务，那么则直接回滚
 					if (status.isDebug()) {
 						logger.debug("Initiating transaction rollback");
 					}
@@ -836,11 +876,15 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				}
 				else {
 					// Participating in larger transaction
+					// 如果当前执行的方法是共用了一个已经存在的事务，而当前执行的方法抛了异常，则要判断是否回滚整个事务，需要看具体配置
 					if (status.hasTransaction()) {
+						// 如果一个事物中有两个方法，第二个方法抛异常后，第二个方法就相当于执行失败需要回滚，如果 isGlobalRollbackOnParticipationFailure 为 true
+						// 则直接设置 connectionHolder 的 rollbackOnly 为 true，表示整个 sql 的事务需要回滚
 						if (status.isLocalRollbackOnly() || isGlobalRollbackOnParticipationFailure()) {
 							if (status.isDebug()) {
 								logger.debug("Participating transaction failed - marking existing transaction as rollback-only");
 							}
+							// 直接设置到 connectionHolder 中，表示整个事务的 sql 都要回滚
 							doSetRollbackOnly(status);
 						}
 						else {
@@ -989,6 +1033,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			TransactionSynchronizationManager.clear();
 		}
 		if (status.isNewTransaction()) {
+			// 这里会关闭数据库连接，只有自己建的数据库连接才会被关闭
 			doCleanupAfterCompletion(status.getTransaction());
 		}
 		if (status.getSuspendedResources() != null) {
@@ -996,6 +1041,7 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				logger.debug("Resuming suspended transaction after completion of inner transaction");
 			}
 			Object transaction = (status.hasTransaction() ? status.getTransaction() : null);
+			// 恢复
 			resume(transaction, (SuspendedResourcesHolder) status.getSuspendedResources());
 		}
 	}

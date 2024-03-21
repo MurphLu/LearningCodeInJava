@@ -73,6 +73,7 @@ import org.springframework.util.Assert;
  */
 public abstract class TransactionSynchronizationManager {
 
+	// key 为 DataSource 对象， value 为 ConnectionHolder 对象
 	private static final ThreadLocal<Map<Object, Object>> resources =
 			new NamedThreadLocal<>("Transactional resources");
 
