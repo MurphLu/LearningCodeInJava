@@ -60,4 +60,5 @@ include 'z_mybatis_with_spring'
 include 'z_mybatis_with_spring'
 include 'z_aop'
 include 'z_spring_transaction'
+include 'z_spring_mvc'
 

@@ -2,22 +2,16 @@ package org.algorithm.leetcode.daily.needToAna;
 
 import java.util.Arrays;
 
+/**
+ * 给你一个下标从 0 开始的 m x n 整数矩阵 grid 。你一开始的位置在 左上角 格子 (0, 0) 。
+ *
+ * 当你在格子 (i, j) 的时候，你可以移动到以下格子之一：
+ *
+ * 满足 j < k <= grid[i][j] + j 的格子 (i, k) （向右移动），或者
+ * 满足 i < k <= grid[i][j] + i 的格子 (k, j) （向下移动）。
+ * 请你返回到达 右下角 格子 (m - 1, n - 1) 需要经过的最少移动格子数，如果无法到达右下角格子，请你返回 -1 。
+ */
 public class MinimumVisitedCells {
-    static class Info{
-        int step;
-        int hTo;
-        int vTo;
-        int nextStepVTo;
-        int nextStepHTo;
-
-        public Info(int step, int hTo, int vTo, int nextStepVTo, int nextStepHTo) {
-            this.step = step;
-            this.hTo = hTo;
-            this.vTo = vTo;
-            this.nextStepVTo = nextStepVTo;
-            this.nextStepHTo = nextStepHTo;
-        }
-    }
     public int minimumVisitedCells(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;

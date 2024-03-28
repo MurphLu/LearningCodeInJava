@@ -3,25 +3,21 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="java-base" />
-        <module name="SpringSelfImpl" />
-        <module name="algorithm" />
-        <module name="design-patterns" />
-      </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-        <module name="spring.z_mybatis_with_spring.main" />
-        <module name="spring.z_spring_transaction.main" />
-        <module name="spring.z_aop.main" />
-        <module name="spring.z_spring_learn_code.main" />
+        <module name="org.springframework.spring.z_aop.main" />
+        <module name="org.springframework.spring.z_spring_learn_code.main" />
+        <module name="org.learn.transaction.spring.z_spring_transaction.main" />
+        <module name="org.springframework.spring.z_mybatis_with_spring.main" />
+        <module name="org.springframework.spring.z_spring_mvc.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="org.learn.mvc.spring.z_spring_mvc.main" target="1.8" />
+      <module name="z-learn-sping-mvc" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

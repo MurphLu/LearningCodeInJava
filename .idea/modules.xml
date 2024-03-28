@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_aop/spring.z_aop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_aop/spring.z_aop.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_mybatis_with_spring/spring.z_mybatis_with_spring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_mybatis_with_spring/spring.z_mybatis_with_spring.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_spring_learn_code/spring.z_spring_learn_code.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_spring_learn_code/spring.z_spring_learn_code.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_spring_mvc/spring.z_spring_mvc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_spring_mvc/spring.z_spring_mvc.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/z_spring_transaction/spring.z_spring_transaction.main.iml" filepath="$PROJECT_DIR$/.idea/modules/z_spring_transaction/spring.z_spring_transaction.main.iml" />
     </modules>
   </component>
 </project>
