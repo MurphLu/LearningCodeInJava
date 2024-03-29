@@ -14,4 +14,38 @@ public class RequestMappingController {
 		modelAndView.addObject("source", "RequestMappingController");
 		return modelAndView;
 	}
+
+	// 试用通配符的话，按精确度排序进行匹配
+	// ? > * > {} > **
+	@RequestMapping("/mapping*")
+	public ModelAndView mapping01() {
+		System.out.println(this.getClass().getName() + " working with mapping*");
+		ModelAndView modelAndView = new ModelAndView("a");
+		modelAndView.addObject("source", "RequestMappingController");
+		return modelAndView;
+	}
+
+	@RequestMapping("/mapping?")
+	public ModelAndView mapping02() {
+		System.out.println(this.getClass().getName() + " working with mapping?");
+		ModelAndView modelAndView = new ModelAndView("a");
+		modelAndView.addObject("source", "RequestMappingController");
+		return modelAndView;
+	}
+
+	@RequestMapping("/**")
+	public ModelAndView mapping03() {
+		System.out.println(this.getClass().getName() + " working with /**");
+		ModelAndView modelAndView = new ModelAndView("a");
+		modelAndView.addObject("source", "RequestMappingController");
+		return modelAndView;
+	}
+
+	@RequestMapping("/{mapping}")
+	public ModelAndView mapping04() {
+		System.out.println(this.getClass().getName() + " working with {mapping} ");
+		ModelAndView modelAndView = new ModelAndView("a");
+		modelAndView.addObject("source", "RequestMappingController");
+		return modelAndView;
+	}
 }

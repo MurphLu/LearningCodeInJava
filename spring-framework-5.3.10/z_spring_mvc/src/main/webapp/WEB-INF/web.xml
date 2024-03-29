@@ -3,6 +3,21 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 		 version="3.1">
+
+<!--	spring 基于 web 应用的启动-->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+<!--	全局参数，spring 配置文件-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-core.xml</param-value>
+	</context-param>
+
+<!--	配置前端控制器，核心调度器
+		加载 spring 容器
+-->
 	<servlet>
 		<servlet-name>springmvc</servlet-name>
 
