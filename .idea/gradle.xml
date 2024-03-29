@@ -4,6 +4,9 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="PLATFORM" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/spring-framework-5.3.10" />
         <option name="modules">
           <set>
@@ -34,9 +37,11 @@
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-webmvc" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/spring-websocket" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_aop" />
+            <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_mybatis_in_spring" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_mybatis_with_spring" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_learn_code" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_mvc" />
+            <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_mvc_without_xml" />
             <option value="$PROJECT_DIR$/spring-framework-5.3.10/z_spring_transaction" />
           </set>
         </option>

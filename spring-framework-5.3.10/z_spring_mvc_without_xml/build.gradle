@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'org.learn.nonxml.mvc'
+version '5.3.10'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.aspectj:aspectjweaver:1.9.19'
+    compileOnly 'org.aspectj:aspectjrt:1.9.19'
+
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    implementation project(":spring-webmvc")
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation 'javax.servlet:javax.servlet-api'
+}
+
+test {
+    useJUnitPlatform()
+}
