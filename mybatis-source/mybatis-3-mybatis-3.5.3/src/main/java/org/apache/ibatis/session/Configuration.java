@@ -602,6 +602,7 @@ public class Configuration {
     executorType = executorType == null ? defaultExecutorType : executorType;
     executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
     Executor executor;
+    // 判断并返回对应 executor
     if (ExecutorType.BATCH == executorType) {
       executor = new BatchExecutor(this, transaction);
     } else if (ExecutorType.REUSE == executorType) {

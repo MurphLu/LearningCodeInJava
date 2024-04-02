@@ -148,11 +148,14 @@ public abstract class BaseExecutor implements Executor {
     }
     List<E> list;
     try {
+      // 一级缓存，获取查询结果（一级缓存是 session 级别的，当提交回滚或关闭 session 时会清空缓存）
       queryStack++;
       list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
       if (list != null) {
+        // 处理一级缓存结果
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
+        // 获取不到则从数据库查询
         list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
       }
     } finally {

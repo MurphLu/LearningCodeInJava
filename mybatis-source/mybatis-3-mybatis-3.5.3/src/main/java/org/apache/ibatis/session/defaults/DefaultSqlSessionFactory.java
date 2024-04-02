@@ -90,10 +90,17 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
     try {
+      // 获取环境变量
       final Environment environment = configuration.getEnvironment();
+      // 获取事务工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      // 创建一个 sql 执行器对象
+      // 一般情况下 如果我们的 mybatis 全局配置文件的 cacheEnabled 默认为 true
+      // 就返回一个 cacheExecutor，cacheExecutor包装了 SimpleExecutor（不特别指定 executor 的情况下）
+      // 若关闭则返回一个 SimpleExecutor
       final Executor executor = configuration.newExecutor(tx, execType);
+      // 返回 sqlSession
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       closeTransaction(tx); // may have fetched a connection so lets call close()

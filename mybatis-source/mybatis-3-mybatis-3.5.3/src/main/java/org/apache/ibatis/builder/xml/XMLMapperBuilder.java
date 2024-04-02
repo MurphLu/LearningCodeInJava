@@ -113,6 +113,7 @@ public class XMLMapperBuilder extends BaseBuilder {
       }
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
+      // 二级缓存策略，如果没有 cache 节点则没有二级缓存
       cacheElement(context.evalNode("cache"));
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
       resultMapElements(context.evalNodes("/mapper/resultMap"));

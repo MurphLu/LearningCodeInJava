@@ -1,9 +1,13 @@
 package org.mb.learn.entity;
 
 import lombok.Data;
+import lombok.ToString;
+
+import java.io.Serializable;
 
 @Data
-public class User {
+@ToString
+public class User implements Serializable {
     long id;
     String name;
 }

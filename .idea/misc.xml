@@ -12,11 +12,13 @@
         <option value="$PROJECT_DIR$/base-codes/pom.xml" />
         <option value="$PROJECT_DIR$/mybatis-source/pom.xml" />
         <option value="$PROJECT_DIR$/SpringSelfImpl/pom.xml" />
+        <option value="$PROJECT_DIR$/excel-worker/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/base-codes/java-hase/pom.xml" />
+        <option value="$PROJECT_DIR$/mybatis-source/excel-worker/pom.xml" />
         <option value="$PROJECT_DIR$/z-learn-sping-mvc/pom.xml" />
       </set>
     </option>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <option name="BUILD_PROCESS_ADDITIONAL_VM_OPTIONS" value="-Djps.track.ap.dependencies=false" />
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
       <profile name="Gradle Imported" enabled="true">
@@ -21,11 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mybatis-learn-code" />
-        <module name="java-base" />
         <module name="SpringSelfImpl" />
+        <module name="mybatis" />
+        <module name="java-base" />
+        <module name="excel-worker" />
         <module name="algorithm" />
         <module name="design-patterns" />
-        <module name="mybatis" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -95,27 +95,68 @@ public class XMLConfigBuilder extends BaseBuilder {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    // 根节点 configuration
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
 
   private void parseConfiguration(XNode root) {
+    // Configuration 在实例化时会注册一些 类型别名，用来解析配置文件中的类型别名字符串
     try {
       //issue #117 read properties first
+      // 解析 properties 节点
+      // <properties resource="db.properties"/>
       propertiesElement(root.evalNode("properties"));
+
+      // 解析 settings 节点
       Properties settings = settingsAsProperties(root.evalNode("settings"));
+
+      // VFS含义是虚拟文件系统:
+      // 主要是通过程序能够方便读取本地文件系统、FTP文件系统等系统中的文件资源。
+      // Mybatis中提供了VFS这个配置，主要是通过该配置可以加载自定义的虚拟文件系统应用程序
+      // 解析到: org.apache.ibatis.session.Configuration#vfsImpl
       loadCustomVfs(settings);
+
+      // 指定 mybatis 所用的日志具体实现，位置定时将自动查找
+      // SLF4J ｜ LOG4J2 | JDK_LOGGING .....
+      // 解析到  org.apache.ibatis.session.Configuration#logImpl
       loadCustomLogImpl(settings);
+
+      // 解析别名
+      // 别名 -> 类型的对应
+      //
       typeAliasesElement(root.evalNode("typeAliases"));
+
+      // 插件，比如分页插件等
+      // 解析到 org.apache.ibatis.session.Configuration#inerceptorChain.interceptors
       pluginElement(root.evalNode("plugins"));
+
+      // objectFactory
+      // org.apache.ibatis.session.Configuration#objectFactory
       objectFactoryElement(root.evalNode("objectFactory"));
+
+      // objectWrapperFactory
+      // org.apache.ibatis.session.Configuration#objectWrapperFactory
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
+
+      // reflectorFactory
+      // org.apache.ibatis.session.Configuration#reflectorFactory
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
+
+      // 设置 settings 属性
       settingsElement(settings);
+
       // read it after objectFactory and objectWrapperFactory issue #631
+      // 配置数据库 transactionManager，datasource 等信息
       environmentsElement(root.evalNode("environments"));
+
+      // 数据库厂商 id
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
+
+      // 类型处理器
       typeHandlerElement(root.evalNode("typeHandlers"));
+
+      // mapper 映射文件
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
@@ -272,12 +313,16 @@ public class XMLConfigBuilder extends BaseBuilder {
   private void environmentsElement(XNode context) throws Exception {
     if (context != null) {
       if (environment == null) {
+        // 	<environments default="development">
         environment = context.getStringAttribute("default");
       }
       for (XNode child : context.getChildren()) {
         String id = child.getStringAttribute("id");
+        // 		<environment id="development">
         if (isSpecifiedEnvironment(id)) {
+          // JDBC => JdbcTransactionFactory.class
           TransactionFactory txFactory = transactionManagerElement(child.evalNode("transactionManager"));
+          // POOLED => PooledDataSourceFactory.class
           DataSourceFactory dsFactory = dataSourceElement(child.evalNode("dataSource"));
           DataSource dataSource = dsFactory.getDataSource();
           Environment.Builder environmentBuilder = new Environment.Builder(id)
