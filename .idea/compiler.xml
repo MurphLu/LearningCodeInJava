@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="mybatis-learn-code" />
         <module name="SpringSelfImpl" />
+        <module name="juc-demo" />
         <module name="mybatis" />
         <module name="java-base" />
         <module name="excel-worker" />

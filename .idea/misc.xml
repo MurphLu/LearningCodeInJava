@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/mybatis-source/pom.xml" />
         <option value="$PROJECT_DIR$/SpringSelfImpl/pom.xml" />
         <option value="$PROJECT_DIR$/excel-worker/pom.xml" />
+        <option value="$PROJECT_DIR$/concurrent/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
