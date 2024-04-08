@@ -99,3 +99,12 @@
 - interrupt(): 将线程的中断标志位设置为 true，不会停止线程
 - isInterrupted(): 判断当前线程的中断标志位是否为 true，不会清除中断标志位
 - Thread.interrupted(): 判断当前线程的中断标志位是否为 true，并清除中断标志位，重置为false
+
+
+### CAS
+- ABA 问题（version no）
+- 只能对一个共享变量的院子操作
+- 自旋 CAS长时间不成功，会给 CPU 带来很大的开销
+
+> atomicXXX 通过 cas 提供高并发下的原子操作
+> longAdder, doubleAdder, 高并发场景下大量线程院子操作解决方案

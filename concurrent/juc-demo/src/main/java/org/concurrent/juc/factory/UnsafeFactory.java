@@ -11,7 +11,20 @@ public class UnsafeFactory {
             theUnsafe.setAccessible(true);
             return (Unsafe) theUnsafe.get(null);
         } catch (Exception ex) {
-            return Unsafe.getUnsafe();
+            ex.printStackTrace();
         }
+        return null;
+    }
+
+    public static long getUnsafeOffset(Unsafe unsafe, Class clazz, String filedName) {
+        try{
+            Field field = clazz.getDeclaredField(filedName);
+            field.setAccessible(true);
+            return unsafe.objectFieldOffset(field);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0L;
+
     }
 }
