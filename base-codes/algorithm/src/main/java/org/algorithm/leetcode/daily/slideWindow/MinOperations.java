@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.slideWindow;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ import java.util.*;
  * 请你返回使 nums 连续 的 最少 操作次数。
  *
  * 求 nums.length 长度范围内包含的对多不重复数字个数
- * 排序 + 滑动窗口
+ * 排序 + 去重 + 滑动窗口
  */
 public class MinOperations {
     public static void main(String[] args) {
