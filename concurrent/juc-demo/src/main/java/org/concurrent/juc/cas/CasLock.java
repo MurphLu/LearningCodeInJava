@@ -15,11 +15,9 @@ public class CasLock {
     public CasLock() {
         this.state = 0;
         unsafe = UnsafeFactory.getUnsafe();
-        try {
-            offset = UnsafeFactory.getUnsafeOffset(unsafe, CasLock.class, "state");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
+
+        offset = UnsafeFactory.getUnsafeOffset(unsafe, CasLock.class, "state");
+
     }
 
     public int getState() {

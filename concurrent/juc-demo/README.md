@@ -107,4 +107,4 @@
 - 自旋 CAS长时间不成功，会给 CPU 带来很大的开销
 
 > atomicXXX 通过 cas 提供高并发下的原子操作
-> longAdder, doubleAdder, 高并发场景下大量线程院子操作解决方案
+> longAdder, doubleAdder, 高并发场景下大量线程原子操作解决方案
