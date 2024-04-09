@@ -5,6 +5,11 @@ package org.algorithm.leetcode.daily;
  *
  * 换句话讲，如果 nums 中正整数的数目是 pos ，而负整数的数目是 neg ，返回 pos 和 neg二者中的最大值。
  * 注意：0 既不是正整数也不是负整数。
+ *
+ * 你可以设计并实现时间复杂度为 O(log(n)) 的算法解决此问题吗
+ *
+ * O(n) 的话直接搞两个计数器，遍历一遍得出结果
+ * O(log(n)) 二分查找找到第一个正数，最后一个负数计算
  */
 public class MaximumCount {
     public static void main(String[] args) {
