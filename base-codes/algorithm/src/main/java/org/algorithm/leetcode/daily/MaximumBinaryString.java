@@ -17,6 +17,7 @@ package org.algorithm.leetcode.daily;
  *
  * 最高位的连续 1 不动，第一个 0 之后的所有 1 都移到字符串末尾，此时字符串的收尾都是连续的 1，只有中间有 0
  * 中间的 0 只保留最后一位（无法替换为 1），其余的全都替换位 1
+ * 0(n)
  */
 public class MaximumBinaryString {
     public static void main(String[] args) {
@@ -25,14 +26,25 @@ public class MaximumBinaryString {
     }
     public static String maximumBinaryString(String binary) {
         char[] chars = binary.toCharArray();
+        // 从 -1 开始可以保证遍历完之后 safeArea 为首部连续 1 最后一位的 index
         int safeArea = -1;
+
+        // 字符首连续 1 的 lastIndex
         while (safeArea < binary.length() - 1 && chars[safeArea + 1] == '1') {
             safeArea++;
         }
+
+        // 如果全是 1 则直接返回
+        if (safeArea == chars.length) {
+            return binary;
+        }
+
+        // 字符串尾第一个 0
         int zeroIdx = binary.length() - 1;
         while (zeroIdx > safeArea && chars[zeroIdx] == '1') {
             zeroIdx--;
         }
+        // 从 zeroIdx 开始往前遍历，遇到 1 则交换
         int oneIdx = zeroIdx;
         while (oneIdx > safeArea) {
             if (chars[oneIdx] != '0') {
@@ -42,9 +54,12 @@ public class MaximumBinaryString {
             }
             oneIdx--;
         }
-        for (int i = safeArea + 1; i < zeroIdx; i++) {
-            chars[i] = '1';
+
+        // 将中间部分的所有 0 除最后一个全替换为 1
+        while (--zeroIdx > safeArea) {
+            chars[zeroIdx] = '1';
         }
+
         return new String(chars);
     }
 }
