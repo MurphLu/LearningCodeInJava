@@ -48,9 +48,13 @@ import java.util.Arrays;
  * dist[i−1]
  * ​
  *  }
- * 需要注意的是，当 j=0j=0j=0 时，我们不能通过「跳过」进行转移；当 j=ij=ij=i 时，我们不能通过「没有跳过」进行转移；当 j>ij>ij>i 时，我们无法在 iii 段道路内跳过超过 iii 次，对应的状态不合法。
+ * 需要注意的是，当 j=0 时，我们不能通过「跳过」进行转移；
+ * 当 j=i 时，我们不能通过「没有跳过」进行转移；
+ * 当 j>i 时，我们无法在 i 段道路内跳过超过 i 次，对应的状态不合法。
  *
- * 当我们计算完所有状态的值后，我们只需要找到最小的 jjj，使得 f[n][j]≤hoursBeforef[n][j] \leq \textit{hoursBefore}f[n][j]≤hoursBefore，这个 jjj 即为最少需要跳过的次数。如果不存在这样的 jjj，那么返回 −1-1−1。
+ * 当我们计算完所有状态的值后，我们只需要找到最小的 j，使得
+ * f[n][j]≤hoursBeforef[n][j] \leq \textit{hoursBefore}f[n][j]≤hoursBefore，
+ * 这个 j 即为最少需要跳过的次数。如果不存在这样的 j，那么返回 −1。
  *
  * 动态规划的细节
  *
@@ -92,4 +96,38 @@ public class MinSkips {
         }
         return -1;
     }
+
+    public int minSkips1(int[] dist, int speed, int hoursBefore) {
+        int n = dist.length;
+        double[][] f = new double[n + 1][n + 1];
+        for (int i = 0; i <= n; ++i) {
+            Arrays.fill(f[i], INFTY);
+        }
+        f[0][0] = 0;
+        for (int i = 1; i <= n; i++) {
+            process(dist, speed, i, 0, f);
+        }
+        for (int j = 0; j <= n; ++j) {
+            if (f[n][j] < hoursBefore + EPS) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
+
+    private void process(int[] dist, int speed, int idx, int skip, double[][] dp) {
+        if (idx > skip) {
+            dp[idx][skip] = Math.min(dp[idx][skip], Math.ceil(dp[idx - 1][skip] + (double) dist[idx - 1]/speed - EPS));
+        }
+        if (skip != 0) {
+            dp[idx][skip] = Math.min(dp[idx][skip], dp[idx - 1][skip - 1] + (double) dist[idx - 1] / speed);
+        }
+        if (skip >= idx) {return;}
+        while (skip < idx) {
+            process(dist, speed, idx, ++skip, dp);
+        }
+    }
+
+
 }
