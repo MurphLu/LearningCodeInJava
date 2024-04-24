@@ -1,4 +1,4 @@
-package org.algorithm.leetcode;
+package org.algorithm.leetcode.daily;
 /**
  * 有一个书店老板，他的书店开了 n 分钟。每分钟都有一些顾客进入这家商店。给定一个长度为 n 的整数数组 customers ，
  * 其中 customers[i] 是在第 i 分钟开始时进入商店的顾客数量，所有这些顾客在第 i 分钟结束后离开。
