@@ -3,67 +3,68 @@ package org.algorithm.leetcode.daily;
 import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * 给定一个候选人编号的集合 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+ *
+ * candidates 中的每个数字在每个组合中只能使用 一次 。
+ *
+ * 注意：解集不能包含重复的组合。
+ */
 public class CombinationSum2 {
     public static void main(String[] args) {
         List<List<Integer>> lists = new CombinationSum2().combinationSum2(
-                new int[]{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                30
+                new int[]{10,1,2,7,6,1,5},
+                8
         );
         System.out.println(lists);
     }
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> res = new ArrayList<>();
-        Set<String> record = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer> list = new ArrayList<>();
         Arrays.sort(candidates);
-        if (candidates[0] == candidates[candidates.length-1]) {
-            int val = candidates[0];
-            if(target % val == 0 && target/val <= candidates.length) {
-                List<Integer> list = new ArrayList<>();
-                for (int i = 0; i < target/val; i++) {
-                    list.add(val);
-                }
-                res.add(list);
-            }
-            return res;
-        }
-        for (int i = 0; i < candidates.length; i++) {
-            if (candidates[i] > target) {
-                continue;
-            } else if (candidates[i] == target) {
-                String s = String.format("%d", candidates[i]);
-                if (record.add(s)) {
-                    res.add(Arrays.asList(candidates[i]));
-                }
 
+        for (int val : candidates) {
+            if (list.isEmpty() || list.get(list.size() - 1) != val) {
+                list.add(val);
             }
-            String rec = candidates[i]+"";
-
-            process(candidates, i, target - candidates[i], rec, res, record);
+            map.put(val, map.getOrDefault(val, 0) + 1);
         }
+        List<List<Integer>> res = new ArrayList<>();
+        process(map, list, 0, "", target, res);
         return res;
     }
 
-    private void process(int[] candidates, int idx, int target, String cur, List<List<Integer>> res, Set<String> record) {
-        if(target < 0) return;
-        for (int i = idx + 1; i < candidates.length; i++) {
-            String curStr = cur + "_" + candidates[i];
-            int nextTarget = target - candidates[i];
-            if (nextTarget == 0) {
-                int[] temp = Arrays.stream(curStr.split("_")).mapToInt(Integer::parseInt).toArray();
-                Arrays.sort(temp);
-                List<Integer> list = new ArrayList<>();
-                StringBuilder tempStr = new StringBuilder();
-                for (int k : temp) {
-                    list.add(k);
-                    tempStr.append(k);
-                }
-
-                if(record.add(tempStr.toString())){
-                    res.add(list);
-                }
-            } else if (nextTarget > 0) {
-                process(candidates, i, nextTarget, curStr, res, record);
+    private void process(Map<Integer, Integer> map, List<Integer> list, int currentIdx, String cur, int target, List<List<Integer>> res) {
+        if (currentIdx >= list.size()) {
+            return;
+        }
+        int currVal = list.get(currentIdx);
+        int count = map.get(currVal);
+        if (target < currVal) {
+            return;
+        }
+        for (int i = count; i >= 0 ; i--) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(cur);
+            for (int j = 0; j < i; j++) {
+                builder.append(currVal);
+                builder.append(",");
             }
+            int tempTarget = target - currVal * i;
+            if (tempTarget < 0) {
+                continue;
+            }
+            if (tempTarget == 0) {
+                String resStr = builder.toString();
+                int[] t = Arrays.stream(resStr.substring(0, resStr.length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
+                List<Integer> tt = new ArrayList<>();
+                for (int k : t) {
+                    tt.add(k);
+                }
+                res.add(tt);
+                continue;
+            }
+            process(map, list, currentIdx+1, builder.toString(), tempTarget, res);
         }
     }
 }
