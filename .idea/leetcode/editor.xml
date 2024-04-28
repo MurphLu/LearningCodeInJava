@@ -3,6 +3,17 @@
   <component name="LeetcodeEditor">
     <option name="projectConfig">
       <map>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1017]负二进制转换.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[1017]负二进制转换.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1017" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1017]负二进制转换.java" />
+              <option name="titleSlug" value="convert-to-base-2" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1052]爱生气的书店老板.java">
           <value>
             <LeetcodeEditor>
