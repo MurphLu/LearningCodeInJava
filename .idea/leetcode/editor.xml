@@ -47,6 +47,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1329]将矩阵按对角线排序.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[1329]将矩阵按对角线排序.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1329" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1329]将矩阵按对角线排序.java" />
+              <option name="titleSlug" value="sort-the-matrix-diagonally" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2385]感染二叉树需要的总时间.java">
           <value>
             <LeetcodeEditor>
