@@ -37,9 +37,14 @@ public class IsNumber {
         if (s.isEmpty() || (s=removeSymbol(s)).isEmpty()){
             return false;
         }
+        // 统计非数字字符的个数
+        // +-号最多有两个，完整数字一个，E 后可以有一个
         int symbolCnt = 0;
+        // . 最多只能有一个
         int pointCnt = 0;
+        // e 或 E 只能有一个
         int expCnt = 0;
+        // 数字字符，如果为 0 那一定不是数字
         int numCnt = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -63,21 +68,32 @@ public class IsNumber {
             }
             numCnt++;
         }
+
+        // 判断个数不符合的话直接返回 false
         if (symbolCnt > 1 || pointCnt > 1 || expCnt > 1 || numCnt == 0) {
             return false;
         }
 
+        // 如果有 e 或者 E
         if (expCnt == 1) {
+            // 判断具体是哪个 e
             String e = s.contains("e") ? "e" : "E";
+            // e 要保证前其后只能是一个 +/- 后边跟的要都是数字，且必须有数字
+            // handleExp 中判断 e 之后是否符合要求，且 e 之前不能为空，不符合返回空
+            // 符合返回 e 之前字符用来做之后的判断
             if((s = handleExp(s, e)) == null) {
                 return false;
             }
         }
 
+        // 如果有 .
         if (pointCnt == 1) {
+            // 只有一个 . 那一定直接返回 false
             if (s.equals(".")) {
                 return false;
             }
+            // 用 . 分割，此时字符串中有且只有一个 . 然后再判断其他字符是否都为数字字符即可
+            // 犹豫只要只有 . 和数字，那么 . 所在的位置就无所谓，直接用 . 分割并判断即可
             String[] split = s.split("\\.");
             for(String sp:split) {
                 while (!sp.isEmpty() && isNumChar(sp.charAt(0))) {
@@ -89,12 +105,12 @@ public class IsNumber {
             }
             return true;
         } else {
+            // 没有 . 的情况直接判断字符串中只有数字字符即可
             while (!s.isEmpty() && isNumChar(s.charAt(0))) {
                 s = s.substring(1);
             }
             return s.isEmpty();
         }
-
     }
 
     private String handleExp(String s, String e){
