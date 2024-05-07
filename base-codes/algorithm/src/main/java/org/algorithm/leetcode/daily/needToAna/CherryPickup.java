@@ -31,22 +31,23 @@ public class CherryPickup {
         // [[0,1,-1],
         //  [1,0,-1],
         //  [1,1,1]]
-        int[][] grid = new int[][]{
-                new int[]{ 0,1, 1,0, 0},
-                new int[]{ 1,1, 1,1, 0},
-                new int[]{-1,1, 1,1,-1},
-                new int[]{ 0,1, 1,1, 0},
-                new int[]{ 1,0,-1,0, 0}
-        };
+        int[][] grid =
 //                new int[][]{
-//                new int[]{1,1,0,0,0,0,0},
-//                new int[]{0,-1,0,1,0,0,0},
-//                new int[]{0,-1,-1,-1,0,0,1},
-//                new int[]{1,0,0,0,0,0,-1},
-//                new int[]{0,0,-1,1,-1,0,-1},
-//                new int[]{0,0,-1,1,-1,0,0},
-//                new int[]{0,0,0,1,1,1,1}
+//                new int[]{ 0,1, 1,0, 0},
+//                new int[]{ 1,1, 1,1, 0},
+//                new int[]{-1,1, 1,1,-1},
+//                new int[]{ 0,1, 1,1, 0},
+//                new int[]{ 1,0,-1,0, 0}
 //        };
+                new int[][]{
+                new int[]{1,1,0,0,0,0,0},
+                new int[]{0,-1,0,1,0,0,0},
+                new int[]{0,-1,-1,-1,0,0,1},
+                new int[]{1,0,0,0,0,0,-1},
+                new int[]{0,0,-1,1,-1,0,-1},
+                new int[]{0,0,-1,1,-1,0,0},
+                new int[]{0,0,0,1,1,1,-1}
+        };
         new CherryPickup().cherryPickup(grid);
     }
     public int cherryPickup(int[][] grid) {
@@ -57,7 +58,17 @@ public class CherryPickup {
                 Arrays.fill(r, -1); // -1 表示没有计算过
             }
         }
-        return Math.max(dfs(n * 2 - 2, n - 1, n - 1, grid, memo), 0);
+        int res1 = Math.max(dfs(n * 2 - 2, n - 1, n - 1, grid, memo), 0);
+        int[][][] memo2 = new int[n * 2 - 1][n][n];
+        for (int[][] m : memo2) {
+            for (int[] r : m) {
+                Arrays.fill(r, -1); // -1 表示没有计算过
+            }
+        }
+        int res2 = Math.max(dp(grid, 0, 0, 0, memo2), 0);
+        System.out.println(res1);
+        System.out.println(res2);
+        return 0;
     }
     private int dfs(int t, int j, int k, int[][] grid, int[][][] memo) {
         // 不能出界，不能访问 -1 格子
@@ -81,5 +92,37 @@ public class CherryPickup {
         ) + grid[t - j][j] + (k != j ? grid[t - k][k] : 0);
         memo[t][j][k] = res; // 记忆化
         return res;
+    }
+
+    /**
+     * 去+回 == 两次去，两个机器人从 0，0 同时出发，同时到达终点，所能摘得的最大樱桃数
+     * @param grid 樱桃地
+     * @param t 一共走的步数
+     * @param go 第一次
+     * @param back 第二次
+     * @param memo 记录
+     * @return 返回每个状态最大值
+     */
+    private int dp(int[][] grid, int t, int go, int back, int[][][] memo) {
+        int n = grid.length;
+        if (go >= n || back >= n || t-go >= n || t-back >= n || grid[t-go][go] == -1 || grid[t-back][back] == -1) {
+            return Integer.MIN_VALUE;
+        }
+        if (memo[t][go][back] != -1) {
+            return memo[t][go][back];
+        }
+
+        if (t == 2*n - 2) {
+            return grid[n-1][n-1] == -1 ? Integer.MIN_VALUE : grid[n-1][n-1];
+        }
+
+        int max = Integer.MIN_VALUE;
+        max = Math.max(dp(grid, t + 1, go, back, memo), max);
+        max = Math.max(dp(grid, t + 1, go + 1, back, memo), max);
+        max = Math.max(dp(grid, t + 1, go, back + 1, memo), max);
+        max = Math.max(dp(grid, t + 1, go + 1, back + 1, memo), max);
+        max += grid[t-go][go] + (go == back ? 0 : grid[t-back][back]);
+        memo[t][go][back] = max;
+        return max;
     }
 }
