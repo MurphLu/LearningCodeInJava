@@ -26,6 +26,24 @@ import java.util.*;
  * 1 <= wordDict[i].length <= 10
  * s 和 wordDict[i] 仅有小写英文字母组成
  * wordDict 中所有字符串都 不同
+ *
+ *
+ * 前缀树
+ * abc, abb, dac
+ *
+ *                  root
+ *                /    \
+ *
+ *        a                 d
+ *        |                /
+ *        b               a
+ *      /  \             /
+ * c(abc)   b(abb)      c(dac)
+ *
+ * 通过前缀树，我们只需要遍历字符串上的每个字符，并从树上自顶向下找对应字符即可，如果到某一个字符时有对应的字符串，那么此处可以拆分为两种情况，
+ * 1. 当前字符串为一个分割点，然后用剩下的字符串继续自顶向下查找下一个对应的字符串
+ * 2. 当前字符串不作为分割点，那么则继续向下查找对应的字符，直到下一个字符串出现
+ * 合并所有情况
  */
 public class WordBreak {
     public static void main(String[] args) {
@@ -105,9 +123,7 @@ public class WordBreak {
         List<String> list = new ArrayList<>();
         if (root.word!= null) {
             List<String> backList = wordBreak(s, wordTree);
-            if (backList == null || backList.isEmpty()) {
-
-            } else {
+            if (backList != null && !backList.isEmpty()) {
                 for (String backStr: backList) {
                     String res = root.word + " " + backStr;
                     list.add(res);
