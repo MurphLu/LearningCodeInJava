@@ -58,6 +58,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[137]只出现一次的数字 II.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[137]只出现一次的数字 II.md" />
+              <option name="frontendQuestionId" value="leetcode.cn137" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[137]只出现一次的数字 II.java" />
+              <option name="titleSlug" value="single-number-ii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[140]单词拆分 II.java">
           <value>
             <LeetcodeEditor>
@@ -102,6 +113,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[260]只出现一次的数字 III.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[260]只出现一次的数字 III.md" />
+              <option name="frontendQuestionId" value="leetcode.cn260" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[260]只出现一次的数字 III.java" />
+              <option name="titleSlug" value="single-number-iii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2739]总行驶距离.java">
           <value>
             <LeetcodeEditor>
@@ -110,6 +132,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2739]总行驶距离.java" />
               <option name="titleSlug" value="total-distance-traveled" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[273]整数转换英文表示.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[273]整数转换英文表示.md" />
+              <option name="frontendQuestionId" value="leetcode.cn273" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[273]整数转换英文表示.java" />
+              <option name="titleSlug" value="integer-to-english-words" />
             </LeetcodeEditor>
           </value>
         </entry>
