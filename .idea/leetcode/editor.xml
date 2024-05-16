@@ -91,6 +91,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1953]你可以工作的最大周数.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[1953]你可以工作的最大周数.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1953" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1953]你可以工作的最大周数.java" />
+              <option name="titleSlug" value="maximum-number-of-weeks-for-which-you-can-work" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2079]给植物浇水.java">
           <value>
             <LeetcodeEditor>
