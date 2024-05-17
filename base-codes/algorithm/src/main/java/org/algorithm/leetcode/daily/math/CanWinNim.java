@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.math;
 
 /**
  * 你和你的朋友，两个人一起玩 Nim 游戏：

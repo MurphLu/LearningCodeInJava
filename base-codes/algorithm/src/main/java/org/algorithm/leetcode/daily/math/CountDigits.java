@@ -1,4 +1,4 @@
-package org.algorithm.leetcode.daily;
+package org.algorithm.leetcode.daily.math;
 
 /**
  * 给你一个整数 num ，返回 num 中能整除 num 的数位的数目。
