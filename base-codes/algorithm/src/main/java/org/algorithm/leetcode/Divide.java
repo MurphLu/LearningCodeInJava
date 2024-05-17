@@ -27,28 +27,27 @@ public class Divide {
         int overVal = 0;
 
         // 只有当除数或被除数为 -2^31 时可能会溢出需要特殊处理
-        if (divisor == min || dividend == min) {
-            // 都是 -2^31 返回 1
-            if (divisor == min && dividend == min) return 1;
-            // 除数是最小值，返回 0
-            if (divisor == min) return 0;
-            // 被除数为最小值：
+
+        // 都是 -2^31 返回 1
+        if (divisor == min && dividend == min) return 1;
+        // 除数是最小值，返回 0
+        if (divisor == min) return 0;
+        // 被除数为最小值：
+        if (dividend == min) {
             //     除数为 -1：直接除会溢出，直接返回最大值
-            //     其他情况：  保留 1，后续将其转为正数参与后边计算时再加回去，避免溢出
-            if (dividend == min) {
-                if (divisor == -1) { return max;}
-                else {
-                    dividend += 1;
-                    overVal = 1;
-                }
+            if (divisor == -1) { return max;}
+            else { //     其他情况：  保留 1，后续将其转为正数参与后边计算时再加回去，避免溢出
+                dividend += 1;
+                overVal = 1;
             }
         }
+
 
         // 查看符号，确定返回值符号
         boolean sameSym = dividend < 0 && divisor < 0 || dividend >= 0 && divisor > 0;
         // 都转为正数参与计算
-        dividend = dividend < 0 ? -dividend : dividend;
-        divisor = divisor < 0 ? -divisor : divisor;
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
 
         // 如果除数小，直接返回 0；
         if (dividend < divisor) {
@@ -56,7 +55,7 @@ public class Divide {
         }
 
         // 相等直接返回 1 或 -1
-        if (Math.abs(dividend) == Math.abs(divisor)) {
+        if (dividend == divisor) {
             return sameSym ? 1 : -1;
         }
 
