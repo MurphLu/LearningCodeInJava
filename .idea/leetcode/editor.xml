@@ -311,6 +311,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[826]安排工作以达到最大收益.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[826]安排工作以达到最大收益.md" />
+              <option name="frontendQuestionId" value="leetcode.cn826" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[826]安排工作以达到最大收益.java" />
+              <option name="titleSlug" value="most-profit-assigning-work" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[84]柱状图中最大的矩形.java">
           <value>
             <LeetcodeEditor>
