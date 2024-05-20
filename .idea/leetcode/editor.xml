@@ -91,6 +91,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1542]找出最长的超赞子字符串.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[1542]找出最长的超赞子字符串.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1542" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1542]找出最长的超赞子字符串.java" />
+              <option name="titleSlug" value="find-longest-awesome-substring" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1953]你可以工作的最大周数.java">
           <value>
             <LeetcodeEditor>
