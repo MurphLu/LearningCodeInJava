@@ -1,4 +1,4 @@
-package org.algorithm.leetcode;
+package org.algorithm.leetcode.backtracking;
 
 /**
  * 编写一个程序，通过填充空格来解决数独问题。
