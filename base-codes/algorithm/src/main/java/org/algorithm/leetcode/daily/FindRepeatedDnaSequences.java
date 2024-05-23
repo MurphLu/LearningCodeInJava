@@ -19,7 +19,7 @@ public class FindRepeatedDnaSequences {
         if (s.length() < 10) {
             return new ArrayList<>();
         }
-        int[] rec = new int[1048576];
+        int[] rec = new int[1048576]; // 2^20
         StringBuilder sb= new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
