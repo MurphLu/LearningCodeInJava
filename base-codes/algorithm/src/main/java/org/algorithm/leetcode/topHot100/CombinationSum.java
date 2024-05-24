@@ -42,13 +42,5 @@ public class CombinationSum {
             process(candidates, idx+1, target - num*count, nextRec, result);
             count--;
         }
-        // 不包含当前数
-//        process(candidates, idx+1, target, rec, result);
-//        List<Integer> nextRoundWithThisNum = new ArrayList<>(rec);
-//        nextRoundWithThisNum.add(num);
-//        process(candidates, idx, target - num, nextRoundWithThisNum, result);
-//        List<Integer> nextRoundWithNextNum = new ArrayList<>(rec);
-//        nextRoundWithNextNum.add(num);
-//        process(candidates, idx+1, target - num, nextRoundWithNextNum, result);
     }
 }
