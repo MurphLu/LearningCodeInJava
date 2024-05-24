@@ -124,6 +124,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1673]找出最具竞争力的子序列.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[1673]找出最具竞争力的子序列.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1673" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[1673]找出最具竞争力的子序列.java" />
+              <option name="titleSlug" value="find-the-most-competitive-subsequence" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[187]重复的DNA序列.java">
           <value>
             <LeetcodeEditor>
