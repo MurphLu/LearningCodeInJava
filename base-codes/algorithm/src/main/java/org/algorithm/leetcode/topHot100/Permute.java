@@ -1,39 +1,31 @@
 package org.algorithm.leetcode.topHot100;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Permute {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        process(nums, nums.length, new ArrayList<>(), result);
+        List<Integer> numbers = new ArrayList<>();
+        for(int num: nums) {
+            numbers.add(num);
+        }
+        process(numbers, new ArrayList<>(), result);
         return result;
     }
 
-    public void process(int[] nums, int end, List<Integer> res, List<List<Integer>> result) {
-        if (end == 0) {
-            result.add(res);
+    public void process(List<Integer> nums, List<Integer> rec, List<List<Integer>> result) {
+        if (nums.isEmpty()) {
+            result.add(rec);
+            return;
         }
-        Set<Integer> showed = new HashSet<>();
-        for (int i = 0; i < end; i++) {
-            int cur = nums[i];
-            if (!showed.contains(cur)) {
-                int[] next = nums.clone();
-                List<Integer> resNew = new ArrayList<>(List.copyOf(res));
-                resNew.add(cur);
-                swap(next, i, end - 1);
-                showed.add(cur);
-                process(next, end - 1, resNew, result);
-            }
+        int n = nums.size();
 
+        for (int i = 0; i < n; i++) {
+            List<Integer> newRec = new ArrayList<>(rec);
+            List<Integer> newNums = new ArrayList<>(nums);
+            int num = newNums.remove(i);
+            newRec.add(num);
+            process(newNums, newRec, result);
         }
-    }
-
-    private void swap(int[] arr, int idx1, int idx2) {
-        int temp = arr[idx1];
-        arr[idx1] = arr[idx2];
-        arr[idx2] = temp;
     }
 }
