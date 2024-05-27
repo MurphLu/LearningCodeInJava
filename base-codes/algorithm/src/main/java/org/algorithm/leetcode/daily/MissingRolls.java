@@ -36,6 +36,7 @@ public class MissingRolls {
         return new int[0];
     }
 
+    // 会回溯遍历各种情况，改造后可返回所有满足条件的情况
     private boolean process(int idx, int remain, int[] nRolls) {
         if (idx == nRolls.length && remain == 0) {
             return true;
