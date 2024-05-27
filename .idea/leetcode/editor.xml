@@ -201,6 +201,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2028]找出缺失的观测数据.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[2028]找出缺失的观测数据.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2028" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2028]找出缺失的观测数据.java" />
+              <option name="titleSlug" value="find-missing-observations" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2079]给植物浇水.java">
           <value>
             <LeetcodeEditor>
