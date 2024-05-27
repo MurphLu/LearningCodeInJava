@@ -1,4 +1,4 @@
-package org.algorithm.leetcode;
+package org.algorithm.leetcode.daily;
 
 /**
  * 现有一份 n + m 次投掷单个 六面 骰子的观测数据，骰子的每个面从 1 到 6 编号。
