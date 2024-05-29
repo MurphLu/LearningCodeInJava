@@ -19,6 +19,7 @@ public class MaximumLength {
         Map<String, Integer> count = new HashMap<>();
         Map<Character, Integer> charCount;
         for (int i = 1; i <= s.length() - 2; i++) {
+            int cnt = 0;
             StringBuilder sb = new StringBuilder(s.substring(0, i));
             charCount = new HashMap<>();
             for(char c: sb.toString().toCharArray()) {
@@ -26,6 +27,7 @@ public class MaximumLength {
             }
             if (charCount.size() == 1) {
                 count.put(sb.toString(), 1);
+                cnt++;
             }
             for (int j = i; j < s.length(); j++){
                 char cRemove = sb.charAt(0);
@@ -40,7 +42,11 @@ public class MaximumLength {
                 if (charCount.size() == 1) {
                     String str = sb.toString();
                     count.put(str, count.getOrDefault(str, 0)+1);
+                    cnt++;
                 }
+            }
+            if (cnt < 3) {
+                break;
             }
         }
         System.out.println(count);
