@@ -13,54 +13,46 @@ import java.util.*;
  */
 public class MaximumLength {
     public static void main(String[] args) {
-        new MaximumLength().maximumLength("cccerrrecdcdccedecdcccddeeeddcdcddedccdceeedccecde");
+        new MaximumLength().maximumLength("aada");
     }
     public int maximumLength(String s) {
-        Map<String, Integer> count = new HashMap<>();
-        Map<Character, Integer> charCount;
-        for (int i = 1; i <= s.length() - 2; i++) {
-            int cnt = 0;
-            StringBuilder sb = new StringBuilder(s.substring(0, i));
-            charCount = new HashMap<>();
-            for(char c: sb.toString().toCharArray()) {
-                charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        Map<String, Integer> record = new HashMap<>();
+        Map<Character, List<String>> charMap = new HashMap<>();
+        int idx = 0;
+        while (idx < s.length()) {
+            int end = idx+1;
+            while (end < s.length() && s.charAt(idx) == s.charAt(end)) {
+                end++;
             }
-            if (charCount.size() == 1) {
-                count.put(sb.toString(), 1);
-                cnt++;
-            }
-            for (int j = i; j < s.length(); j++){
-                char cRemove = sb.charAt(0);
-                charCount.put(cRemove, charCount.get(cRemove)-1);
-                if (charCount.get(cRemove) == 0) {
-                    charCount.remove(cRemove);
-                }
-                sb.deleteCharAt(0);
-                char c = s.charAt(j);
-                charCount.put(c, charCount.getOrDefault(c, 0) + 1);
-                sb.append(c);
-                if (charCount.size() == 1) {
-                    String str = sb.toString();
-                    count.put(str, count.getOrDefault(str, 0)+1);
-                    cnt++;
-                }
-            }
-            if (cnt < 3) {
-                break;
-            }
+
+            String subStr = s.substring(idx, end);
+            char c = subStr.charAt(0);
+            record.put(subStr, record.getOrDefault(subStr, 0) + 1);
+            List<String> cl = charMap.getOrDefault(c, new ArrayList<>());
+            cl.add(subStr);
+            charMap.put(c, cl);
+            idx = end;
         }
-        System.out.println(count);
-        int maxLength = 0;
-        int strCount = 0;
-        for(Map.Entry<String, Integer> entry : count.entrySet()) {
-            if(entry.getValue() >=3) {
-                int keyLength = entry.getKey().length();
-                if (keyLength > maxLength) {
-                    maxLength = keyLength;
+        int max = 0;
+        for(Map.Entry<String, Integer> entry: record.entrySet()) {
+            String str = entry.getKey();
+            int cnt = entry.getValue();
+            List<String> sl = charMap.get(str.charAt(0));
+            for(String subString: sl) {
+                if (subString.length() > str.length()) {
+                    cnt += (subString.length() - str.length() + 1) * record.get(subString);
                 }
             }
+            if (cnt >= 3) {
+                max = Math.max(str.length(), max);
+            } else if (cnt == 2) {
+                max = Math.max(str.length() - 1, max);
+            } else {
+                max = Math.max(str.length() - 2, max);
+            }
+
         }
-        return maxLength;
+        return max == 0 ? -1 : max;
     }
 
 }
