@@ -124,6 +124,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[123]买卖股票的最佳时机 III.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[123]买卖股票的最佳时机 III.md" />
+              <option name="frontendQuestionId" value="leetcode.cn123" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[123]买卖股票的最佳时机 III.java" />
+              <option name="titleSlug" value="best-time-to-buy-and-sell-stock-iii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[125]验证回文串.java">
           <value>
             <LeetcodeEditor>
@@ -462,6 +473,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2960]统计已测试设备.java" />
               <option name="titleSlug" value="count-tested-devices-after-test-operations" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2965]找出缺失和重复的数字.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[2965]找出缺失和重复的数字.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2965" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2965]找出缺失和重复的数字.java" />
+              <option name="titleSlug" value="find-missing-and-repeated-values" />
             </LeetcodeEditor>
           </value>
         </entry>
