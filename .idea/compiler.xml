@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="mybatis-learn-code" />
+        <module name="java-base" />
         <module name="SpringSelfImpl" />
         <module name="juc-demo" />
-        <module name="mybatis" />
-        <module name="java-base" />
         <module name="excel-worker" />
+        <module name="mybatis" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
