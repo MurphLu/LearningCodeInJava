@@ -42,6 +42,13 @@ import org.openjdk.jol.info.ClassLayout;
  *  偏向锁 -> Sync 加锁 -> 解锁 -> Sync 加锁 -> 轻量级锁 （如果系统底层对于线程有优化，两个 thread，底层地址相同的话，到最后也有可能还是偏向所）
  *  无锁 -> Sync 加锁 -> 轻量级锁
  *  无锁 -> Sync 加锁 -> 轻量级锁 -> 另一个线程 Sync 抢夺 -> 重量级锁
+ *
+ *  obj.wait(100) 会膨胀为重量级锁，会调用内核的 park
+ *
+ *
+ *  <br/>
+ *  <br/>
+ *  <img src="lock_states.png" />
  */
 public class ObjTest {
     public static void main(String[] args) throws InterruptedException {
@@ -89,29 +96,28 @@ public class ObjTest {
 
         printObj(o);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (o) {
-                    printObj(o);
-                    try {
-                        o.wait(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    printObj(o);
+        new Thread(() -> {
+            synchronized (o) {
+                printObj(o);
+                try {
+                    o.wait(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                printObj(o);
             }
         }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (o) {
-                    printObj(o);
-                }
+//        Thread.sleep(1000);
+        new Thread(() -> {
+            synchronized (o) {
+                printObj(o);
+            }
 
-            }
         }).start();
+
+        Thread.sleep(3000);
+        // 释放完之后变为无锁
+        printObj(o);
     }
     static void printObj(Object o) {
         System.out.println(ClassLayout.parseInstance(o).toPrintable());
