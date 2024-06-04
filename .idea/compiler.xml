@@ -27,11 +27,11 @@
         <module name="mybatis" />
         <module name="java-base" />
         <module name="excel-worker" />
-        <module name="algorithm" />
-        <module name="design-patterns" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="algorithm" target="11" />
+      <module name="design-patterns" target="11" />
       <module name="learn-java" target="1.5" />
       <module name="org.learn.mvc.spring.z_spring_mvc.main" target="1.8" />
       <module name="z-learn-sping-mvc" target="1.5" />
