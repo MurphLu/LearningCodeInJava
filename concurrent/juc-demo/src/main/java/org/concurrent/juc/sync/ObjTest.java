@@ -1,6 +1,9 @@
-package org.concurrent.juc.obj;
+package org.concurrent.juc.sync;
 
 import org.openjdk.jol.info.ClassLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 偏向锁撤销之调用对象HashCode
@@ -52,6 +55,11 @@ import org.openjdk.jol.info.ClassLayout;
  */
 public class ObjTest {
     public static void main(String[] args) throws InterruptedException {
+//        lock_status();
+        reBiased();
+    }
+
+    private static void lock_status() throws InterruptedException {
         Object o1 = new Object();
         printObj(o1);
         new Thread(()->{
@@ -119,12 +127,67 @@ public class ObjTest {
         // 释放完之后变为无锁
         printObj(o);
     }
+
+    // -XX:+PrintFlagsFinal 打印 jvm 参数
+
+    // intx BiasedLockingBulkRebiasThreshold         = 20 默认批量重偏向阈值
+    // intx BiasedLockingBulkRevokeThreshold         = 40 默认偏向锁批量撤销阈值
+    private static void reBiased() throws InterruptedException {
+        List<Object> list = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            list.add(new Object());
+        }
+        new Thread(()->{
+            for (int i = 0; i < list.size(); i++) {
+                Object o = list.get(i);
+                synchronized (o) {
+                    if (i > 16 && i <= 22 || i > 38) {
+                        System.out.println("thread 1 第 " +(i+1)+ " 次加锁");
+                        printObj(o);
+                    }
+                }
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        Thread.sleep(3000);
+
+        new Thread(()->{
+            for (int i = 0; i < list.size(); i++) {
+                Object o = list.get(i);
+                synchronized (o) {
+                    if (i >= 16 && i <= 22 || i > 38) {
+                        System.out.println("thread 2 第 " +(i+1)+ " 次加锁");
+                        printObj(o);
+                    }
+                }
+            }
+        }).start();
+        Thread.sleep(3000);
+
+        new Thread(()->{
+            for (int i = 0; i < list.size(); i++) {
+                Object o = list.get(i);
+                synchronized (o) {
+                    if (i >= 16 && i <= 22 || i > 38) {
+                        System.out.println("thread 3 第 " +(i+1)+ " 次加锁");
+                        printObj(o);
+                    }
+                }
+            }
+        }).start();
+        Thread.sleep(3000);
+
+
+        Object o = new Object();
+        printObj(o);
+
+    }
+
     static void printObj(Object o) {
         System.out.println(ClassLayout.parseInstance(o).toPrintable());
     }
-}
-class Test extends Object {
-    int a;
-    long b;
-    boolean c;
 }
