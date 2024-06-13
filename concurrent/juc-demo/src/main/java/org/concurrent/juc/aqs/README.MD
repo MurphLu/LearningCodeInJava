@@ -75,3 +75,45 @@ protected final boolean compareAndSetState(int expect, int update) {
 - ReentrantLock获取锁的形式有多种:如立即返回是否成功的 tryLock(),以及等待指定时长的获取，更加灵活
 - synchronized在特定的情况下对于已经在等待的线程是后来的线程先获得锁(回顾一下 synchronized 的唤醒策略)，而 ReentrantLock 对于已经在等待的线程是先来的线程先获得锁
 
+### Semaphore
+> Semaphore，俗称信号量，它是操作系统中PV操作的原语在java的实现，它也是基于AbstractQueuedSynchronizer实现的.
+> 
+> Semaphore的功能非常强大，大小为1的信号量就类似于互斥锁，通过同时只能有一个线程获取信号量实现。大小为n(n > 0)的信号量可以实现限流的功能，它可以实现只能有n个线程同时获取信号量。
+>
+
+#### PV操作
+> 是操作系统一种实现进程互斥与同步的有效方法。PV操作与信号量(S)的处理相关，P表示通过的意思，"表示释放的意思。用PV操作来管理共享资源时，首先要确保PV操作自身执行的正确性。
+
+##### P操作的主要动作是:
+1. S减1;
+2. 若S减1后仍大于或等于0，则进程继续执行;
+3. 若S减1后小于0，则该进程被阻塞后放入等待该信号量的等待队列中，然后转进程调度
+
+##### V操作的主要动作是:
+1. S加1;
+2. 若相加后结果大于0，则进程继续执行;
+3. 若相加后结果小于或等于0，则从该信号的等待队列中释放一个等待进程，然后再返回原进程继续执行或转进程调度
+
+#### 构造方法
+```java
+class Semaphore{
+    public Semaphore(int permits) {
+        sync = new NonfairSync(permits);
+    }
+    
+    public Semaphore(int permits, boolean fair) {
+        sync = fair ? new FairSync(permits) : new NonfairSync(permits);
+    }
+}
+
+// permits 代表许可数量
+// fair 表示公平性，如果为 true 的话，下次执行的线程会是等待最久的线程
+```
+
+
+### CountDownLatch 
+CountDownLatch(闭锁)是一个同步协助类，允许一个或多个线程等待，直到其他线程完成操作集。</br>
+CountDownLatch使用给定的计数值(count)初始化。</br>
+await方法会阻塞直到当前的计数值(count)由于countDown方法的调用达到0，coun为0之后所有等待的线程都会被释放，并且随后对await方法的调用都会立即返回。</br>
+这是一个一次性现象-- count不会被重置。</br>
+如果你需要一个重置count的版本，那么请考虑使用CyclicBarrier.
