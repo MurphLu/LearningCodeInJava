@@ -10,39 +10,14 @@ public class Intro {
 //        reentrantLock();
 //        semaphore();
 
-        countDownLatch();
+//        CountDownLatchDemo.cdlDemo();
+//        CountDownLatchDemo.ontCtl();
+//        CyclicBarrierDemo.cbDemo();
+//        CyclicBarrierDemo.cbWithThreadPool();
+        CyclicBarrierDemo.reentrantLockD();
     }
 
-    private static void countDownLatch() {
-        CountDownLatch startSingle = new CountDownLatch(1);
-        CountDownLatch doneSingle = new CountDownLatch(5);
-        for (int i = 0; i < 5; i++) {
-            new Thread(()->{
-                try {
-                    startSingle.await();
-                    Thread.sleep(1000);
-                    System.out.println(Thread.currentThread().getName() + " 开始执行...");
-                    doneSingle.countDown();
-                }catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }).start();
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        startSingle.countDown();
-        try {
-            doneSingle.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("workDon and do something else");
 
-//        countDownLatch.countDown();
-    }
 
     private static void semaphore() {
         Semaphore semaphore = new Semaphore(3);

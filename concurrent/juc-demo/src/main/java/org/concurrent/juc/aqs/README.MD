@@ -116,4 +116,29 @@ CountDownLatch(闭锁)是一个同步协助类，允许一个或多个线程等�
 CountDownLatch使用给定的计数值(count)初始化。</br>
 await方法会阻塞直到当前的计数值(count)由于countDown方法的调用达到0，coun为0之后所有等待的线程都会被释放，并且随后对await方法的调用都会立即返回。</br>
 这是一个一次性现象-- count不会被重置。</br>
-如果你需要一个重置count的版本，那么请考虑使用CyclicBarrier.
+如果你需要一个重置count的版本，那么请考虑使用 CyclicBarrier.
+
+#### CountDownLatch实现原理
+底层基于 AbstractQueuedSynchronizer 实现，CountDownLatch 构造函数中指定的count直接赋给AQS的state;
+每次countDown()则都是release(1)减1，最后减到 0 时 unpark 阻塞线程; </br>
+这一步是由最后一个执行 cuntdown 方法的线程执行的。</br>
+而调用await()方法时，当前线程就会判断 state 属性是否为 0，如果为 0 则继续往下执行，如果不为 0，则使当前线程进入等待状态，直到某个线程将 state 属性置为0，其就会唤醒在 await() 方法中等待的线程
+
+#### CountDownLatch与Thread.join的区别
+- CountDownLatch的作用就是允许一个或多个线程等待其他线程成操作，看起来有点类似 join() 方法，但其提供了比 join() 更加灵活的 API.</br>
+- CountDownLatch 可以手动控制在 n 个线程里调用 n 次 countDown (方法使计数器进行减一操作，也可以在一个线程里调用n次执行减一操作。
+- 而 join() 的实现原理是不停检査join线程是否存活，如果 join 线程存活则让当前线程永远等待。所以两者之间相对来说还是 CountDownLatch使用起来较为灵活.
+
+#### CountDownLatch与cyclicBarrier的区别
+> CountDownLatch 和 CyclicBarrier 都能够实现线程之间的等待，只不过它们侧重点不同:
+1. CountDownLatch的计数器只能使用一次，而CyclicBarrier的计数可以使用reset()方法重置。所以CyclicBarrier能处理更为复杂的业务场次景，比如如果计算发生错误，可以重置计数器，并让线程们重新执行
+2. CyclicBarrier 还提供 getNumberWaiting (可以获得 CyclicBarrier 阻塞的线程数量)、isBroken (用来知道阻塞的线程是否被中断)等方法。会阻塞子线程。 
+3. CountDownLatch 会阻塞主线程，CyclicBarrier 不会阻塞主线程，只会阻塞子线程
+4. CountDownLatch 和 CyclicBarrier 都能够实现线程之间的等待，只不过它们侧重点不同。CountDownLatch 一般用于一个或多个线程，等待其他线程执行完任务后，再执行。CyclicBarrier 一般用于一组线程互相待至某个状态，然后这一组线程再同时执行。
+5. CyclicBarrier 还可以提供一个 barrierAction，合并多线程计算结果
+6. CyclicBarrier 是通过 ReentrantLock 的"独占锁"和 Condition 来实现组线程的阻塞唤醒的，而 CountDownLatch 则是通过 AQS 的“共享锁”实现
+
+### CyclicBarrier
+> 字面意思回环栅栏(循环屏障)通过它可以实现让一组线程等待至某个状态(屏障点)之后再全部同时执行。叫做回环是因为当所有等待线程都被释放以后, CyclicBarrier可以被重用。
+
+- condition.signalAll 条件队列专同步队列 -> 转为 AQS 执行逻辑

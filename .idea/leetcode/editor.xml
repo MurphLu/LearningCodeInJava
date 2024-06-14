@@ -454,6 +454,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2786]访问数组中的位置使分数最大.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[2786]访问数组中的位置使分数最大.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2786" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2786]访问数组中的位置使分数最大.java" />
+              <option name="titleSlug" value="visit-array-positions-to-maximize-score" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2831]找出最长等值子数组.java">
           <value>
             <LeetcodeEditor>
