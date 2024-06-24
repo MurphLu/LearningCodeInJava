@@ -4,8 +4,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * <img src="forkjoinPool.png"/>
+ */
 public class ForkJoinPoolDemo {
 
+    // 适合做计算密集型任务
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ForkJoinPool pool = new ForkJoinPool();
         int[] arr = new int[10000000];
