@@ -421,6 +421,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2732]找到矩阵中的好子集.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/doc/content/[2732]找到矩阵中的好子集.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2732" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2732]找到矩阵中的好子集.java" />
+              <option name="titleSlug" value="find-a-good-subset-of-the-matrix" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../LeetCode/leetcode/editor/cn/[2739]总行驶距离.java">
           <value>
             <LeetcodeEditor>
